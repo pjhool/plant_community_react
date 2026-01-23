@@ -1,15 +1,14 @@
 import { Loader2 } from "lucide-react";
-import { cn } from "../utils/cn";
+import { cn } from "@/core/utils/cn";
 
 interface LoadingProps {
     className?: string;
-    size?: number;
 }
 
-export function Loading({ className, size = 24 }: LoadingProps) {
+export const Loading = ({ className }: LoadingProps) => {
     return (
-        <div className={cn("flex items-center justify-center", className)}>
-            <Loader2 className="animate-spin text-primary" size={size} />
+        <div className="flex items-center justify-center p-8">
+            <Loader2 className={cn("h-10 w-10 animate-spin text-primary", className)} />
         </div>
     );
-}
+};
