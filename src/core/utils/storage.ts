@@ -1,34 +1,28 @@
-/**
- * Safe wrapper for LocalStorage access
- */
 export const storage = {
-    get: <T>(key: string): T | null => {
-        if (typeof window === "undefined") return null;
+    get: (key: string) => {
+        if (typeof window === 'undefined') return null;
         try {
             const item = window.localStorage.getItem(key);
             return item ? JSON.parse(item) : null;
         } catch (error) {
-            console.error(`Error reading from localStorage key "${key}":`, error);
+            console.error('Error getting from storage', error);
             return null;
         }
     },
-
-    set: <T>(key: string, value: T): void => {
-        if (typeof window === "undefined") return;
+    set: (key: string, value: any) => {
+        if (typeof window === 'undefined') return;
         try {
             window.localStorage.setItem(key, JSON.stringify(value));
         } catch (error) {
-            console.error(`Error saving to localStorage key "${key}":`, error);
+            console.error('Error setting storage', error);
         }
     },
-
-    remove: (key: string): void => {
-        if (typeof window === "undefined") return;
+    remove: (key: string) => {
+        if (typeof window === 'undefined') return;
         window.localStorage.removeItem(key);
     },
-
-    clear: (): void => {
-        if (typeof window === "undefined") return;
+    clear: () => {
+        if (typeof window === 'undefined') return;
         window.localStorage.clear();
-    },
+    }
 };
