@@ -20,6 +20,7 @@ vi.mock('firebase/auth', () => ({
     })),
     signInWithEmailAndPassword: vi.fn(),
     createUserWithEmailAndPassword: vi.fn(),
+    updateProfile: vi.fn(),
     signOut: vi.fn(),
     onAuthStateChanged: vi.fn((auth, callback) => {
         callback(null);
@@ -31,6 +32,10 @@ vi.mock('firebase/auth', () => ({
 
 vi.mock('firebase/firestore', () => ({
     getFirestore: vi.fn(() => ({})),
+    doc: vi.fn(),
+    setDoc: vi.fn(),
+    getDoc: vi.fn(),
+    serverTimestamp: vi.fn(),
 }));
 
 vi.mock('firebase/storage', () => ({
