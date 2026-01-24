@@ -81,6 +81,37 @@ export const AuthService = {
     },
 
     /**
+     * Sign in with GitHub
+     */
+    signInWithGitHub: async (): Promise<User> => {
+        const { GithubAuthProvider } = await import('firebase/auth');
+        const provider = new GithubAuthProvider();
+        const userCredential = await signInWithPopup(auth, provider);
+        const firebaseUser = userCredential.user;
+
+        // Check if user exists in Firestore
+        const existingUser = await AuthService.getUserProfile(firebaseUser.uid);
+
+        if (existingUser) {
+            return existingUser;
+        }
+
+        // Create new user if not exists
+        const newUser: User = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email || '',
+            displayName: firebaseUser.displayName || 'User',
+            photoURL: firebaseUser.photoURL,
+            bio: '',
+            createdAt: serverTimestamp() as any,
+            updatedAt: serverTimestamp() as any,
+        };
+
+        await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
+        return newUser;
+    },
+
+    /**
      * Sign out
      */
     signOut: async (): Promise<void> => {
