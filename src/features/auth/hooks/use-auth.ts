@@ -8,15 +8,21 @@ interface AuthStore extends AuthState {
     setError: (error: string | null) => void;
     setUser: (user: AuthState['user']) => void;
     signOut: () => Promise<void>;
+    isInitialized: boolean;
+    setInitialized: (val: boolean) => void;
+    reset: () => void;
 }
 
 const useAuthStore = create<AuthStore>((set) => ({
     user: null,
     isLoading: true,
     error: null,
+    isInitialized: false,
     setLoading: (isLoading) => set({ isLoading }),
     setError: (error) => set({ error }),
     setUser: (user) => set({ user }),
+    setInitialized: (val) => set({ isInitialized: val }),
+    reset: () => set({ user: null, isLoading: true, error: null, isInitialized: false }),
     signOut: async () => {
         set({ isLoading: true });
         try {
@@ -34,14 +40,13 @@ export const useAuth = () => {
     const user = useAuthStore(state => state.user);
     const isLoading = useAuthStore(state => state.isLoading);
     const error = useAuthStore(state => state.error);
-
-    // Actions are stable in Zustand
-    const setUser = useAuthStore(state => state.setUser);
-    const setLoading = useAuthStore(state => state.setLoading);
-    const setError = useAuthStore(state => state.setError);
     const signOut = useAuthStore(state => state.signOut);
 
     useEffect(() => {
+        const { isInitialized, setInitialized, setUser, setLoading } = useAuthStore.getState();
+        if (isInitialized) return;
+        setInitialized(true);
+
         const unsubscribe = AuthService.onAuthStateChanged(async (firebaseUser) => {
             if (firebaseUser) {
                 try {
@@ -58,15 +63,17 @@ export const useAuth = () => {
         });
 
         return () => unsubscribe();
-    }, [setUser, setLoading]); // Use stable action references
+    }, []);
 
     return {
         user,
         isLoading,
         error,
-        setUser,
-        setLoading,
-        setError,
-        signOut
+        signOut,
+        // Expose actions if needed
+        setUser: useAuthStore.getState().setUser,
+        setError: useAuthStore.getState().setError,
+        setLoading: useAuthStore.getState().setLoading,
+        reset: useAuthStore.getState().reset,
     };
 };

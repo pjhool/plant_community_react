@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth-service';
 
 vi.mock('../services/auth-service', () => ({
     AuthService: {
-        onAuthStateChanged: vi.fn(),
+        onAuthStateChanged: vi.fn(() => () => { }),
         getUserProfile: vi.fn(),
         mapFirebaseUserToUser: vi.fn(),
     },
@@ -14,6 +14,11 @@ vi.mock('../services/auth-service', () => ({
 describe('useAuth', () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        // Assuming we can access the hook's result to call reset, 
+        // but better to mock or call the store directly if possible.
+        // However, useAuth returns the store functions.
+        const { result } = renderHook(() => useAuth());
+        result.current.reset();
     });
 
     it('should initialize with loading state', async () => {
@@ -30,7 +35,15 @@ describe('useAuth', () => {
 
     it('should update state when user is authenticated', async () => {
         const mockFirebaseUser = { uid: '123', email: 'test@test.com' };
-        const mockProfile = { uid: '123', email: 'test@test.com', displayName: 'Test User' };
+        const mockProfile: any = {
+            uid: '123',
+            email: 'test@test.com',
+            displayName: 'Test User',
+            photoURL: null,
+            bio: '',
+            createdAt: new Date() as any,
+            updatedAt: new Date() as any,
+        };
 
         vi.mocked(AuthService.onAuthStateChanged).mockImplementation((cb: any) => {
             cb(mockFirebaseUser);
