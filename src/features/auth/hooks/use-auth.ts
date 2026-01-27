@@ -31,29 +31,42 @@ const useAuthStore = create<AuthStore>((set) => ({
 }));
 
 export const useAuth = () => {
-    const store = useAuthStore();
+    const user = useAuthStore(state => state.user);
+    const isLoading = useAuthStore(state => state.isLoading);
+    const error = useAuthStore(state => state.error);
+
+    // Actions are stable in Zustand
+    const setUser = useAuthStore(state => state.setUser);
+    const setLoading = useAuthStore(state => state.setLoading);
+    const setError = useAuthStore(state => state.setError);
+    const signOut = useAuthStore(state => state.signOut);
 
     useEffect(() => {
         const unsubscribe = AuthService.onAuthStateChanged(async (firebaseUser) => {
             if (firebaseUser) {
-                // Determine if we need to fetch profile. Ideally, we optimize this.
-                // For now, let's just assume we want fresh data or mapped data.
                 try {
-                    const user = await AuthService.getUserProfile(firebaseUser.uid) || AuthService.mapFirebaseUserToUser(firebaseUser);
-                    store.setUser(user);
+                    const userProfile = await AuthService.getUserProfile(firebaseUser.uid) || AuthService.mapFirebaseUserToUser(firebaseUser);
+                    setUser(userProfile);
                 } catch (e: any) {
-                    // Fallback to basic info if Firestore fetch fails
-                    store.setUser(AuthService.mapFirebaseUserToUser(firebaseUser));
+                    setUser(AuthService.mapFirebaseUserToUser(firebaseUser));
                     console.error("Failed to fetch user profile", e);
                 }
             } else {
-                store.setUser(null);
+                setUser(null);
             }
-            store.setLoading(false);
+            setLoading(false);
         });
 
         return () => unsubscribe();
-    }, [store]); // Added store to dependencies
+    }, [setUser, setLoading]); // Use stable action references
 
-    return store;
+    return {
+        user,
+        isLoading,
+        error,
+        setUser,
+        setLoading,
+        setError,
+        signOut
+    };
 };
