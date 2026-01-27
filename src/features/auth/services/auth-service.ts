@@ -122,11 +122,16 @@ export const AuthService = {
      * Get user profile from Firestore
      */
     getUserProfile: async (uid: string): Promise<User | null> => {
-        const docRef = doc(db, 'users', uid);
-        const docSnap = await getDoc(docRef);
+        try {
+            const docRef = doc(db, 'users', uid);
+            const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            return docSnap.data() as User;
+            if (docSnap.exists()) {
+                return docSnap.data() as User;
+            }
+        } catch (error: any) {
+            console.error("Firestore error (likely offline):", error);
+            // Return null so the caller can fall back to basic auth info
         }
         return null;
     },
