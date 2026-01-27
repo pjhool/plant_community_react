@@ -9,8 +9,6 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const { user, isLoading } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
-
-    // Define public routes that don't need authentication
     const publicPaths = ['/login', '/signup', '/verify-email'];
 
     useEffect(() => {

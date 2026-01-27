@@ -53,7 +53,7 @@ export const useAuth = () => {
         });
 
         return () => unsubscribe();
-    }, []); // Empty dependency array ensures this runs once on mount
+    }, [store]); // Added store to dependencies
 
     return store;
 };

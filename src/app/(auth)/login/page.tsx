@@ -42,7 +42,7 @@ export default function LoginPage() {
                 <SocialAuthButtons />
 
                 <div className="text-center text-sm">
-                    <span className="text-gray-600 dark:text-gray-400">Don't have an account? </span>
+                    <span className="text-gray-600 dark:text-gray-400">Don&apos;t have an account? </span>
                     <Link href="/signup" className="font-medium text-green-600 hover:text-green-500">
                         Sign up
                     </Link>
