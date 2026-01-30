@@ -25,7 +25,7 @@ export default function SummaryPage() {
     setIsSubmitting(true);
     try {
       await PostService.createPost({
-        userId: user.uid,
+        authorId: user.uid,
         author: {
           displayName: user.displayName || 'Unknown',
           photoURL: user.photoURL || undefined
