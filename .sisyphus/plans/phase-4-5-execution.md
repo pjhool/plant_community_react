@@ -93,7 +93,7 @@
     - `ls AGENTS.md` exists.
   - **Agent**: `quick` (Skills: `playwright`, `git-master`)
 
-- [ ] 2. **Implement Feed Service & Types**
+- [x] 2. **Implement Feed Service & Types**
   - **What to do**:
     - Define `Post`, `PostFilter` types in `src/features/feed/types`.
     - Implement `feed-service.ts`: `getFeed(filter, limit, cursor)`.
