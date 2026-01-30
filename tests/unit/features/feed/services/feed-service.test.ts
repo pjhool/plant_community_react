@@ -1,0 +1,5 @@
+"import { describe, it, expect, vi, beforeEach } from 'vitest';"  
+"import { FeedService } from './feed-service';"  
+"vi.mock('firebase/firestore', () => ({ getFirestore: vi.fn(), collection: vi.fn(), query: vi.fn(), where: vi.fn(), orderBy: vi.fn(), limit: vi.fn(), startAfter: vi.fn(), getDocs: vi.fn() }));"  
+"vi.mock('@/core/services/firebase', () => ({ db: {} }));"  
+"describe('FeedService', () => { it('should be defined', () => { expect(FeedService).toBeDefined(); }); });" 

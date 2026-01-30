@@ -1,0 +1,5 @@
+"import { EnvironmentSnapshot, ExperienceLevel, LightDirection, ResidenceType } from '@/features/environment-profile/types/environment';"  
+"export type PostType = 'QUESTION' | 'FAILURE' | 'SUCCESS' | 'GENERAL';"  
+"export interface PlantInfo { name: string; scientificName?: string; adoptionDate?: string; }"  
+"export interface Post { id: string; userId: string; author: { displayName: string; photoURL?: string; }; type: PostType; title?: string; content: string; images: string[]; environment: EnvironmentSnapshot; plant?: PlantInfo; likes: number; comments: number; createdAt: any; updatedAt: any; }"  
+"export interface PostFilter { type?: PostType; residenceType?: ResidenceType; lightDirection?: LightDirection; experienceLevel?: ExperienceLevel; userId?: string; }" 
