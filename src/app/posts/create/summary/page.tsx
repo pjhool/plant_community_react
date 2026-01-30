@@ -31,7 +31,7 @@ export default function SummaryPage() {
         authorId: user.uid,
         author: {
           displayName: user.displayName || 'Unknown',
-          photoURL: user.photoURL || undefined
+          photoURL: user.photoURL || null
         } as any,
         type: data.type,
         status: 'PUBLISHED' as any,
