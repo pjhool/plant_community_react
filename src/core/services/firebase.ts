@@ -21,12 +21,8 @@ const firebaseConfig = {
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 
-// Initialize Firestore with persistence on the client
-const db = typeof window !== "undefined"
-    ? initializeFirestore(app, {
-        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
-    })
-    : getFirestore(app);
+// Initialize Firestore
+const db = getFirestore(app);
 
 const storage = getStorage(app);
 
