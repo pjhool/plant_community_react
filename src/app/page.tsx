@@ -2,9 +2,16 @@
 
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { Button } from "@/core/components/Button";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
     const { signOut, user } = useAuth();
+    const router = useRouter();
+
+    const handleSignOut = async () => {
+        await signOut();
+        router.push("/login");
+    };
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-center p-24 gap-4">
@@ -12,7 +19,7 @@ export default function HomePage() {
             <p className="text-xl">Hello, {user?.displayName || 'Gardener'}!</p>
             <p className="text-gray-500">Find the best care for your plants!</p>
 
-            <Button onClick={() => signOut()} variant="destructive">
+            <Button onClick={handleSignOut} variant="destructive">
                 Sign Out / 로그아웃
             </Button>
             <p className="text-sm text-gray-400 mt-2">
