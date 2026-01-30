@@ -21,7 +21,10 @@ export default function SummaryPage() {
   };
 
   const handleSubmit = async () => {
-    if (!user) return;
+    if (!user || !user.uid) {
+      alert('Your session seems to be invalid. Please sign in again.');
+      return;
+    }
     setIsSubmitting(true);
     try {
       await PostService.createPost({
