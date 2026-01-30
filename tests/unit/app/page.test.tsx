@@ -3,6 +3,7 @@ import { vi, expect, it, describe } from 'vitest';
 import HomePage from '@/app/page';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { useRouter } from 'next/navigation';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Mock useAuth
 vi.mock('@/features/auth/hooks/use-auth', () => ({
@@ -28,13 +29,18 @@ describe('HomePage', () => {
             push,
         });
 
-        render(<HomePage />);
+        const queryClient = new QueryClient();
+        render(
+            <QueryClientProvider client={queryClient}>
+                <HomePage />
+            </QueryClientProvider>
+        );
 
-        const signOutButton = screen.getByText(/Sign Out \/ 로그아웃/i);
+        const signOutButton = screen.getByText(/Sign Out/i);
         fireEvent.click(signOutButton);
 
         expect(signOut).toHaveBeenCalled();
-        
+
         // Wait for the async handleSignOut to call router.push
         await waitFor(() => {
             expect(push).toHaveBeenCalledWith('/login');

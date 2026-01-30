@@ -22,7 +22,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'pnpm dev',
+    command: 'npx.cmd next dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
   },

@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { FeedList } from './FeedList';
+import { FeedList } from '@/features/feed/components/FeedList/FeedList';
 import { describe, it, expect, vi } from 'vitest';
-import { useFeed } from '../../hooks/use-feed';
+import { useFeed } from '@/features/feed/hooks/use-feed';
 
 // Mock useFeed hook
-vi.mock('../../hooks/use-feed');
+vi.mock('@/features/feed/hooks/use-feed');
 
 describe('FeedList', () => {
   const mockPosts = [
@@ -21,7 +21,7 @@ describe('FeedList', () => {
       isLoading: true,
       data: undefined
     });
-    
+
     render(<FeedList />);
     expect(screen.getByRole('status')).toBeInTheDocument(); // Assumes Loading component has role='status' or similar check
   });
@@ -32,7 +32,7 @@ describe('FeedList', () => {
       isError: true,
       data: undefined
     });
-    
+
     render(<FeedList />);
     expect(screen.getByText('Failed to load feed. Please try again.')).toBeInTheDocument();
   });
@@ -43,9 +43,10 @@ describe('FeedList', () => {
       isError: false,
       data: { pages: [{ posts: [] }] }
     });
-    
+
     render(<FeedList />);
-    expect(screen.getByText('No posts found. Be the first to share your story!')).toBeInTheDocument();
+    expect(screen.getByText(/No posts found/i)).toBeInTheDocument();
+    expect(screen.getByText(/Be the first to share your story/i)).toBeInTheDocument();
   });
 
   it('renders posts', () => {
@@ -55,7 +56,7 @@ describe('FeedList', () => {
       data: { pages: [{ posts: mockPosts }] },
       hasNextPage: false
     });
-    
+
     render(<FeedList />);
     expect(screen.getByText('Post 1')).toBeInTheDocument();
     expect(screen.getByText('Post 2')).toBeInTheDocument();
@@ -71,11 +72,11 @@ describe('FeedList', () => {
       fetchNextPage,
       isFetchingNextPage: false
     });
-    
+
     render(<FeedList />);
-    const button = screen.getByText('Load More');
+    const button = screen.getByText('Load More Posts');
     expect(button).toBeInTheDocument();
-    
+
     fireEvent.click(button);
     expect(fetchNextPage).toHaveBeenCalled();
   });

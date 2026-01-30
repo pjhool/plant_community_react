@@ -44,7 +44,7 @@ describe('FeedService', () => {
 
         (getDocs as any).mockResolvedValue(mockSnapshot);
 
-        const result = await FeedService.getEnvironmentFeed({
+        const result = await FeedService.getEnvironmentProfileFeed({
             residenceType: 'APARTMENT',
             // other environment fields...
         } as any);
