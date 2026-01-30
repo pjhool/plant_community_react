@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Loading } from "./Loading";
+import { Loading } from '@/core/components/Loading';
 import React from "react";
 
 describe("Loading Component", () => {

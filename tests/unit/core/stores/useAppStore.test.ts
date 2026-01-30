@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { useAppStore } from "./useAppStore";
+import { useAppStore } from "@/core/stores/useAppStore";
 
 describe("useAppStore", () => {
     it("should have initial state", () => {

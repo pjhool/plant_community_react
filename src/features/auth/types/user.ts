@@ -31,7 +31,14 @@ export interface User {
     /**
      * Profile last update date
      */
+    /**
+     * Profile last update date
+     */
     updatedAt: Timestamp;
+    /**
+     * Whether the user has completed the onboarding process (e.g. environment setup)
+     */
+    isOnboarded?: boolean;
 }
 
 /**

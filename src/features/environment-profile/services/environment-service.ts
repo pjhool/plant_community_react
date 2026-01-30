@@ -1,9 +1,11 @@
 import { db } from '@/core/services/firebase';
-import { 
-  doc, 
-  getDoc, 
-  setDoc, 
-  updateDoc 
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  writeBatch,
+  serverTimestamp
 } from 'firebase/firestore';
 import { EnvironmentProfile } from '../types/environment';
 
@@ -20,7 +22,11 @@ export const EnvironmentService = {
   },
 
   async saveProfile(userId: string, profile: Omit<EnvironmentProfile, 'userId' | 'createdAt' | 'updatedAt'>): Promise<void> {
-    const docRef = doc(db, COLLECTION_NAME, userId);
+    console.log("Saving profile for userId:", userId);
+    const batch = writeBatch(db);
+
+    // 1. Set Environment Profile
+    const envRef = doc(db, COLLECTION_NAME, userId);
     const now = new Date().toISOString();
     const fullProfile: EnvironmentProfile = {
       ...profile,
@@ -28,7 +34,16 @@ export const EnvironmentService = {
       createdAt: now,
       updatedAt: now,
     };
-    await setDoc(docRef, fullProfile);
+    batch.set(envRef, fullProfile);
+
+    // 2. Update User isOnboarded status in 'users' collection
+    const userRef = doc(db, 'users', userId);
+    batch.set(userRef, {
+      isOnboarded: true,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+
+    await batch.commit();
   },
 
   async updateProfile(userId: string, profile: Partial<EnvironmentProfile>): Promise<void> {

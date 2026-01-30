@@ -3,10 +3,12 @@ import { EnvironmentService } from '../services/environment-service';
 import { useEnvironmentStore } from '../stores/useEnvironmentStore';
 import { useEffect } from 'react';
 import { EnvironmentProfile } from '../types/environment';
+import { useAuth } from '@/features/auth/hooks/use-auth';
 
 export const useEnvironment = (userId?: string) => {
   const queryClient = useQueryClient();
   const { profile, setProfile } = useEnvironmentStore();
+  const { user, setUser } = useAuth();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['environment-profile', userId],
@@ -25,6 +27,10 @@ export const useEnvironment = (userId?: string) => {
       EnvironmentService.saveProfile(userId, profile),
     onSuccess: (_, { userId }) => {
       queryClient.invalidateQueries({ queryKey: ['environment-profile', userId] });
+      // Update local auth state to reflect onboarding completion
+      if (user && user.uid === userId) {
+        setUser({ ...user, isOnboarded: true });
+      }
     },
   });
 
@@ -36,3 +42,4 @@ export const useEnvironment = (userId?: string) => {
     isSaving: saveMutation.isPending,
   };
 };
+
