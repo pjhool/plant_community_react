@@ -5,36 +5,41 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { Loading } from "@/core/components/Loading";
 
+const publicPaths = ['/login', '/signup', '/verify-email', '/'];
+const guestOnlyPaths = ['/login', '/signup'];
+
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const { user, isLoading } = useAuth();
     const router = useRouter();
     const pathname = usePathname();
-    const publicPaths = ['/login', '/signup', '/verify-email'];
 
     useEffect(() => {
         if (!isLoading) {
             const isPublicPath = publicPaths.some(path => pathname === path || pathname.startsWith(path + '/'));
+            const isGuestOnlyPath = guestOnlyPaths.some(path => pathname === path || pathname.startsWith(path + '/'));
 
             if (!user && !isPublicPath) {
-                // If user is not logged in and trying to access private route
                 router.push('/login');
-            } else if (user && isPublicPath) {
-                // If user is already logged in and trying to access auth pages
+            } else if (user && isGuestOnlyPath) {
+                router.push('/');
+            } else if (user && !user.isOnboarded && !pathname.startsWith('/onboarding')) {
+                // Redirect to onboarding if user is not onboarded and not already there
+                router.push('/onboarding/setup');
+            } else if (user && user.isOnboarded && pathname.startsWith('/onboarding')) {
+                // Prevent access to onboarding if already completed
                 router.push('/');
             }
         }
     }, [user, isLoading, router, pathname]);
 
-    // Show loading spinner while checking auth state
     if (isLoading) {
         return (
-            <div className="flex h-screen items-center justify-center">
+            <div className="flex h-screen items-center justify-center bg-background">
                 <Loading size="lg" />
             </div>
         );
     }
 
-    // If not on public path and no user, don't render children (waiting for redirect)
     if (!user && !publicPaths.includes(pathname)) {
         return null;
     }

@@ -32,7 +32,9 @@ export const AuthService = {
             bio: '',
             createdAt: serverTimestamp() as any,
             updatedAt: serverTimestamp() as any,
+            isOnboarded: false,
         };
+
 
         await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
 
@@ -43,12 +45,28 @@ export const AuthService = {
      * Sign in with email and password
      */
     signInWithEmail: async (email: string, password: string): Promise<User> => {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const firebaseUser = userCredential.user;
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const firebaseUser = userCredential.user;
 
-        // Fetch user data from Firestore or return basic info
-        return await AuthService.getUserProfile(firebaseUser.uid) || AuthService.mapFirebaseUserToUser(firebaseUser);
+            // Fetch user data from Firestore or return basic info
+            return await AuthService.getUserProfile(firebaseUser.uid) || AuthService.mapFirebaseUserToUser(firebaseUser);
+        } catch (error: any) {
+            console.error("Sign in error:", error.code, error.message);
+            let errorMessage = "Failed to sign in. Please try again.";
+            
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                errorMessage = "Invalid email or password. Please check your credentials.";
+            } else if (error.code === 'auth/too-many-requests') {
+                errorMessage = "Too many failed login attempts. Please try again later.";
+            } else if (error.code === 'auth/network-request-failed') {
+                errorMessage = "Network error. Please check your internet connection.";
+            }
+            
+            throw new Error(errorMessage);
+        }
     },
+
 
     /**
      * Sign in with Google
@@ -74,7 +92,9 @@ export const AuthService = {
             bio: '',
             createdAt: serverTimestamp() as any,
             updatedAt: serverTimestamp() as any,
+            isOnboarded: false,
         };
+
 
         await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
         return newUser;
@@ -105,7 +125,9 @@ export const AuthService = {
             bio: '',
             createdAt: serverTimestamp() as any,
             updatedAt: serverTimestamp() as any,
+            isOnboarded: false,
         };
+
 
         await setDoc(doc(db, 'users', firebaseUser.uid), newUser);
         return newUser;

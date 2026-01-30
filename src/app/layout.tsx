@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google"
+import { Noto_Sans_KR } from "next/font/google";
 import "../core/styles/globals.css";
 import { Providers } from "../core/components/Providers";
+import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { cn } from "@/core/utils/cn";
 
-const notoTSans = Noto_Sans_KR({
+const notoSans = Noto_Sans_KR({
     subsets: ["latin"],
     weight: ["400", "500", "700"],
     variable: "--font-noto-sans",
@@ -24,10 +25,12 @@ export default function RootLayout({
         <html lang="ko" suppressHydrationWarning>
             <body className={cn(
                 "min-h-screen bg-background font-sans antialiased",
-                notoTSans.variable
+                notoSans.variable
             )}>
                 <Providers>
-                    {children}
+                    <AuthGuard>
+                        {children}
+                    </AuthGuard>
                 </Providers>
             </body>
         </html>

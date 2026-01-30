@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { EnvironmentService } from './environment-service';
-import { getDoc, setDoc } from 'firebase/firestore';
+import { EnvironmentService } from '@/features/environment-profile/services/environment-service';
+import { getDoc, writeBatch } from 'firebase/firestore';
 
 vi.mock('@/core/services/firebase', () => ({
   db: {}
@@ -11,6 +11,12 @@ vi.mock('firebase/firestore', () => ({
   getDoc: vi.fn(),
   setDoc: vi.fn(),
   updateDoc: vi.fn(),
+  writeBatch: vi.fn(() => ({
+    set: vi.fn(),
+    update: vi.fn(),
+    commit: vi.fn().mockResolvedValue(undefined),
+  })),
+  serverTimestamp: vi.fn(),
 }));
 
 describe('EnvironmentService', () => {
@@ -48,9 +54,21 @@ describe('EnvironmentService', () => {
   });
 
   describe('saveProfile', () => {
-    it('should save profile with timestamps', async () => {
+    it('should save profile and update user onboarding status using batch', async () => {
+      const mockBatch = {
+        set: vi.fn(),
+        update: vi.fn(),
+        commit: vi.fn().mockResolvedValue(undefined),
+      };
+      vi.mocked(writeBatch).mockReturnValue(mockBatch as any);
+
       await EnvironmentService.saveProfile(mockUserId, mockProfile);
-      expect(setDoc).toHaveBeenCalledWith(
+
+      // Verify writeBatch was called
+      expect(writeBatch).toHaveBeenCalled();
+
+      // Verify environment data save via batch.set
+      expect(mockBatch.set).toHaveBeenCalledWith(
         undefined,
         expect.objectContaining({
           userId: mockUserId,
@@ -59,6 +77,17 @@ describe('EnvironmentService', () => {
           updatedAt: expect.any(String),
         })
       );
+
+      // Verify user onboarding status update via batch.set (with merge)
+      expect(mockBatch.set).toHaveBeenCalledWith(
+        undefined,
+        expect.objectContaining({ isOnboarded: true }),
+        { merge: true }
+      );
+
+      // Verify batch.commit was called
+      expect(mockBatch.commit).toHaveBeenCalled();
     });
   });
+
 });
