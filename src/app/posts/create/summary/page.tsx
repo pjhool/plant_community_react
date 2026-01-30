@@ -25,7 +25,7 @@ export default function SummaryPage() {
     setIsSubmitting(true);
     try {
       await PostService.createPost({
-        userId: user.uid,
+        authorId: user.uid,
         author: {
           displayName: user.displayName || 'Unknown',
           photoURL: user.photoURL || undefined
@@ -81,11 +81,11 @@ export default function SummaryPage() {
 
         <div className='space-y-3'>
           <label className='text-sm font-medium'>Add Photos</label>
-          <input 
-            type='file' 
-            multiple 
-            accept='image/*' 
-            onChange={handleFileChange} 
+          <input
+            type='file'
+            multiple
+            accept='image/*'
+            onChange={handleFileChange}
             className='block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20'
           />
           {selectedFiles.length > 0 && (
@@ -101,4 +101,3 @@ export default function SummaryPage() {
     </div>
   );
 }
-"

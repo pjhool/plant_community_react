@@ -6,7 +6,123 @@
                 "queryScope": "COLLECTION",
                 "fields": [
                     {
-                        "fieldPath": "userId",
+                        "fieldPath": "status",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "createdAt",
+                        "order": "DESCENDING"
+                    }
+                ]
+            },
+            {
+                "collectionGroup": "posts",
+                "queryScope": "COLLECTION",
+                "fields": [
+                    {
+                        "fieldPath": "status",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "type",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "createdAt",
+                        "order": "DESCENDING"
+                    }
+                ]
+            },
+            {
+                "collectionGroup": "posts",
+                "queryScope": "COLLECTION",
+                "fields": [
+                    {
+                        "fieldPath": "status",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "environment.residenceType",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "createdAt",
+                        "order": "DESCENDING"
+                    }
+                ]
+            },
+            {
+                "collectionGroup": "posts",
+                "queryScope": "COLLECTION",
+                "fields": [
+                    {
+                        "fieldPath": "status",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "environment.lightDirection",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "createdAt",
+                        "order": "DESCENDING"
+                    }
+                ]
+            },
+            {
+                "collectionGroup": "posts",
+                "queryScope": "COLLECTION",
+                "fields": [
+                    {
+                        "fieldPath": "status",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "environment.experienceLevel",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "createdAt",
+                        "order": "DESCENDING"
+                    }
+                ]
+            },
+            {
+                "collectionGroup": "posts",
+                "queryScope": "COLLECTION",
+                "fields": [
+                    {
+                        "fieldPath": "status",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "authorId",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "createdAt",
+                        "order": "DESCENDING"
+                    }
+                ]
+            },
+            {
+                "collectionGroup": "posts",
+                "queryScope": "COLLECTION",
+                "fields": [
+                    {
+                        "fieldPath": "status",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "environment.residenceType",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "environment.lightDirection",
+                        "order": "ASCENDING"
+                    },
+                    {
+                        "fieldPath": "environment.experienceLevel",
                         "order": "ASCENDING"
                     },
                     {
