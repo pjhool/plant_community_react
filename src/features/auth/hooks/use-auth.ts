@@ -43,18 +43,26 @@ export const useAuth = () => {
     const signOut = useAuthStore(state => state.signOut);
 
     useEffect(() => {
-        const { isInitialized, setInitialized, setUser, setLoading } = useAuthStore.getState();
-        if (isInitialized) return;
-        setInitialized(true);
+        const { setUser, setLoading } = useAuthStore.getState();
 
         const unsubscribe = AuthService.onAuthStateChanged(async (firebaseUser) => {
             if (firebaseUser) {
                 try {
-                    const userProfile = await AuthService.getUserProfile(firebaseUser.uid) || AuthService.mapFirebaseUserToUser(firebaseUser);
+                    // Add timeout to prevent hanging if Firestore is unreachable
+                    const timeoutPromise = new Promise<null>((_, reject) =>
+                        setTimeout(() => reject(new Error('Firestore timeout')), 5000)
+                    );
+
+                    const profilePromise = AuthService.getUserProfile(firebaseUser.uid);
+
+                    // Race between fetch and timeout
+                    const userProfile = await Promise.race([profilePromise, timeoutPromise])
+                        || AuthService.mapFirebaseUserToUser(firebaseUser);
+
                     setUser(userProfile);
                 } catch (e: any) {
+                    console.warn("Firestore access timed out, using basic auth profile.", e.message);
                     setUser(AuthService.mapFirebaseUserToUser(firebaseUser));
-                    console.error("Failed to fetch user profile", e);
                 }
             } else {
                 setUser(null);
@@ -62,7 +70,9 @@ export const useAuth = () => {
             setLoading(false);
         });
 
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+        };
     }, []);
 
     return {

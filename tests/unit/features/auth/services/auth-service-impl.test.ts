@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { AuthService } from './auth-service';
+import { AuthService } from '@/features/auth/services/auth-service';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { setDoc, getDoc } from 'firebase/firestore';
 

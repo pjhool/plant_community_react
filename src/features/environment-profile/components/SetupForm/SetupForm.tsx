@@ -12,16 +12,16 @@ import { useRouter } from 'next/navigation';
 
 export const SetupForm = () => {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const { saveProfile, isSaving } = useEnvironment(user?.uid);
-  const { 
-    step, 
-    formData, 
-    nextStep, 
-    prevStep, 
-    updateFormData, 
-    isFirstStep, 
-    isLastStep 
+  const {
+    step,
+    formData,
+    nextStep,
+    prevStep,
+    updateFormData,
+    isFirstStep,
+    isLastStep
   } = useEnvironmentForm();
 
   const handleNext = async () => {
@@ -29,6 +29,12 @@ export const SetupForm = () => {
       if (!user) return;
       try {
         await saveProfile({ userId: user.uid, profile: formData });
+
+        // Update local user state immediately to allow redirection
+        if (setUser) {
+          setUser({ ...user, isOnboarded: true });
+        }
+
         router.push('/onboarding/summary');
       } catch (e) {
         console.error("Failed to save profile", e);
@@ -38,15 +44,16 @@ export const SetupForm = () => {
     }
   };
 
+
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
           <div>
             <h2 className="text-xl font-bold mb-4">어디에서 식물을 키우시나요?</h2>
-            <ResidenceSelector 
-              value={formData.residenceType} 
-              onChange={(val) => updateFormData({ residenceType: val })} 
+            <ResidenceSelector
+              value={formData.residenceType}
+              onChange={(val) => updateFormData({ residenceType: val })}
             />
           </div>
         );
@@ -54,9 +61,9 @@ export const SetupForm = () => {
         return (
           <div>
             <h2 className="text-xl font-bold mb-4">빛이 어느 정도 들어오나요?</h2>
-            <LightSelector 
-              value={formData.lightDirection} 
-              onChange={(val) => updateFormData({ lightDirection: val })} 
+            <LightSelector
+              value={formData.lightDirection}
+              onChange={(val) => updateFormData({ lightDirection: val })}
             />
           </div>
         );
@@ -64,9 +71,9 @@ export const SetupForm = () => {
         return (
           <div>
             <h2 className="text-xl font-bold mb-4">식물 키우기 실력은 어느 정도인가요?</h2>
-            <ExperienceSelector 
-              value={formData.experienceLevel} 
-              onChange={(val) => updateFormData({ experienceLevel: val })} 
+            <ExperienceSelector
+              value={formData.experienceLevel}
+              onChange={(val) => updateFormData({ experienceLevel: val })}
             />
           </div>
         );
@@ -85,7 +92,7 @@ export const SetupForm = () => {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-sm border border-gray-100">
       <StepIndicator currentStep={step} totalSteps={3} />
-      
+
       <div className="min-h-[300px]">
         {renderStep()}
       </div>
@@ -102,9 +109,8 @@ export const SetupForm = () => {
         <button
           onClick={handleNext}
           disabled={!canGoNext() || isSaving}
-          className={`flex-1 px-4 py-3 rounded-lg text-white font-medium transition-colors ${
-            canGoNext() && !isSaving ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-300 cursor-not-allowed'
-          }`}
+          className={`flex-1 px-4 py-3 rounded-lg text-white font-medium transition-colors ${canGoNext() && !isSaving ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-300 cursor-not-allowed'
+            }`}
         >
           {isSaving ? '저장 중...' : isLastStep ? '완료' : '다음'}
         </button>

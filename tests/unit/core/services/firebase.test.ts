@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { auth, db, storage } from "./firebase";
+import { auth, db, storage } from "@/core/services/firebase";
 
 describe("Firebase Service", () => {
     it("should initialize firebase services", () => {
