@@ -1,0 +1,61 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { PostType, PlantInfo } from '../../feed/types/post';
+import { EnvironmentProfileSnapshot } from '../../feed/types/post';
+
+interface PostFormData {
+    type: PostType;
+    title: string;
+    content: string;
+    images: string[];
+    imageFiles: File[];
+    environment: Partial<EnvironmentProfileSnapshot>;
+    plant: Partial<PlantInfo>;
+    failureCause?: string;
+    causeAnalysis?: string;
+    learnedLesson?: string;
+}
+
+interface PostFormStore {
+    data: PostFormData;
+    step: number;
+    updateData: (data: Partial<PostFormData>) => void;
+    nextStep: () => void;
+    prevStep: () => void;
+    setStep: (step: number) => void;
+    reset: () => void;
+}
+
+const initialData: PostFormData = {
+    type: 'GENERAL' as PostType,
+    title: '',
+    content: '',
+    images: [],
+    imageFiles: [],
+    environment: {},
+    plant: { name: '', imageUrls: [] },
+};
+
+export const usePostFormStore = create<PostFormStore>()(
+    persist(
+        (set) => ({
+            data: initialData,
+            step: 1,
+            updateData: (newData) => set((state) => ({
+                data: { ...state.data, ...newData }
+            })),
+            nextStep: () => set((state) => ({ step: state.step + 1 })),
+            prevStep: () => set((state) => ({ step: Math.max(1, state.step - 1) })),
+            setStep: (step) => set({ step }),
+            reset: () => set({ data: initialData, step: 1 }),
+        }),
+        {
+            name: 'post-form-storage',
+            // Don't persist image files
+            partialize: (state) => ({
+                data: { ...state.data, imageFiles: [] },
+                step: state.step,
+            }),
+        }
+    )
+);

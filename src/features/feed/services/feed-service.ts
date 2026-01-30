@@ -7,37 +7,51 @@ import {
     startAfter, 
     getDocs, 
     DocumentData,
-    QueryDocumentSnapshot
+    QueryDocumentSnapshot,
+    QueryConstraint
 } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
-import { Post, PostStatus } from '../types/post';
-import { Environment } from '@/features/environment-profile/types/environment';
+import { Post, PostStatus, PostFilter } from '../types/post';
+import { EnvironmentProfile } from '@/features/environment-profile/types/environment';
 
 const POSTS_PER_PAGE = 10;
 
 export const FeedService = {
     /**
-     * Get feed based on user environment
+     * Get feed with optional filters
      */
-    getEnvironmentFeed: async (
-        userEnv: Environment, 
+    getFeed: async (
+        filter: PostFilter = {}, 
         lastDoc?: QueryDocumentSnapshot<DocumentData>
     ): Promise<{ posts: Post[], lastDoc?: QueryDocumentSnapshot<DocumentData> }> => {
         try {
-            // Simplified query for now: Filter by residenceType and sort by createdAt
-            // Complex queries require composite indexes which we'll optimize in Task 4.9
-            let q = query(
-                collection(db, 'posts'),
+            const constraints: QueryConstraint[] = [
                 where('status', '==', PostStatus.PUBLISHED),
-                where('environment.residenceType', '==', userEnv.residenceType),
                 orderBy('createdAt', 'desc'),
                 limit(POSTS_PER_PAGE)
-            );
+            ];
 
-            if (lastDoc) {
-                q = query(q, startAfter(lastDoc));
+            if (filter.type) {
+                constraints.push(where('type', '==', filter.type));
+            }
+            if (filter.residenceType) {
+                constraints.push(where('environment.residenceType', '==', filter.residenceType));
+            }
+            if (filter.lightDirection) {
+                constraints.push(where('environment.lightDirection', '==', filter.lightDirection));
+            }
+            if (filter.experienceLevel) {
+                constraints.push(where('environment.experienceLevel', '==', filter.experienceLevel));
+            }
+            if (filter.userId) {
+                constraints.push(where('authorId', '==', filter.userId));
             }
 
+            if (lastDoc) {
+                constraints.push(startAfter(lastDoc));
+            }
+
+            const q = query(collection(db, 'posts'), ...constraints);
             const querySnapshot = await getDocs(q);
             const posts: Post[] = [];
 
@@ -50,9 +64,23 @@ export const FeedService = {
                 lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1]
             };
         } catch (error) {
-            console.error("Error fetching feed:", error);
+            console.error('Error fetching feed:', error);
             throw error;
         }
+    },
+
+    /**
+     * Get feed based on user environment
+     */
+    getEnvironmentProfileFeed: async (
+        userEnv: EnvironmentProfile, 
+        lastDoc?: QueryDocumentSnapshot<DocumentData>
+    ): Promise<{ posts: Post[], lastDoc?: QueryDocumentSnapshot<DocumentData> }> => {
+        return FeedService.getFeed({
+            residenceType: userEnv.residenceType,
+            lightDirection: userEnv.lightDirection,
+            experienceLevel: userEnv.experienceLevel
+        }, lastDoc);
     },
 
     /**
@@ -61,32 +89,6 @@ export const FeedService = {
     getRecentFeed: async (
         lastDoc?: QueryDocumentSnapshot<DocumentData>
     ): Promise<{ posts: Post[], lastDoc?: QueryDocumentSnapshot<DocumentData> }> => {
-        try {
-            let q = query(
-                collection(db, 'posts'),
-                where('status', '==', PostStatus.PUBLISHED),
-                orderBy('createdAt', 'desc'),
-                limit(POSTS_PER_PAGE)
-            );
-
-            if (lastDoc) {
-                q = query(q, startAfter(lastDoc));
-            }
-
-            const querySnapshot = await getDocs(q);
-            const posts: Post[] = [];
-
-            querySnapshot.forEach((doc) => {
-                posts.push({ id: doc.id, ...doc.data() } as Post);
-            });
-
-            return {
-                posts,
-                lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1]
-            };
-        } catch (error) {
-            console.error("Error fetching recent feed:", error);
-            throw error;
-        }
+        return FeedService.getFeed({}, lastDoc);
     }
 };

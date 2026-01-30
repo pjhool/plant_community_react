@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase/firestore';
 import { User } from '@/features/auth/types/user';
-import { Environment } from '@/features/environment-profile/types/environment';
+import { EnvironmentProfile } from '@/features/environment-profile/types/environment';
 
 export enum PostType {
     FAILURE = 'FAILURE',
@@ -14,7 +14,7 @@ export enum PostStatus {
     DRAFT = 'DRAFT',
 }
 
-export interface EnvironmentSnapshot extends Environment {
+export interface EnvironmentProfileSnapshot extends EnvironmentProfile {
     snapshotAt: Timestamp;
 }
 
@@ -36,7 +36,7 @@ export interface Post {
     images: string[];
     
     // Core Data
-    environment: EnvironmentSnapshot;
+    environment: EnvironmentProfileSnapshot;
     plant: PlantInfo;
     
     // Metadata
@@ -53,4 +53,12 @@ export interface FailurePost extends Post {
     failureCause: string;
     causeAnalysis?: string;
     learnedLesson?: string;
+}
+
+export interface PostFilter {
+    type?: PostType;
+    residenceType?: string;
+    lightDirection?: string;
+    experienceLevel?: string;
+    userId?: string;
 }
