@@ -22,7 +22,7 @@ export default function EnvLockPage() {
           lightDirection: profile.lightDirection,
           experienceLevel: profile.experienceLevel,
           userId: profile.userId,
-          location: profile.location
+          location: profile.location || null
         } as any
       });
     }
