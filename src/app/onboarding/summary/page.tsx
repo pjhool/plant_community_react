@@ -3,7 +3,6 @@
 import { useEnvironment } from '@/features/environment-profile/hooks/use-environment';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import Link from 'next/link';
-import { getResidenceLabel, getLightLabel, getExperienceLabel } from '@/features/environment-profile/utils/labels';
 
 export default function OnboardingSummaryPage() {
   const { user } = useAuth();
@@ -14,37 +13,33 @@ export default function OnboardingSummaryPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center">
-        <h1 className="text-2xl font-bold mb-8">내 환경 요약</h1>
-
-        <div className="bg-gray-50 rounded-xl p-8 mb-8 text-left space-y-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🏠</span>
-            <span className="text-xl font-bold">
-              {getResidenceLabel(profile?.residenceType)} · {getLightLabel(profile?.lightDirection)}
-            </span>
+        <div className="text-5xl mb-6">🌿</div>
+        <h1 className="text-2xl font-bold mb-4">환경 설정 완료!</h1>
+        <p className="text-gray-600 mb-8">
+          이제 {user?.displayName || '집사'}님의 환경에 맞는 식물 정보를 추천해드릴게요.
+        </p>
+        
+        <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
+          <div className="mb-4">
+            <span className="text-sm text-gray-500">거주 환경</span>
+            <div className="font-medium text-lg">{profile?.residenceType}</div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🌱</span>
-            <span className="text-lg text-gray-700">
-              {getExperienceLabel(profile?.experienceLevel, true)}
-            </span>
+          <div className="mb-4">
+            <span className="text-sm text-gray-500">채광 방향</span>
+            <div className="font-medium text-lg">{profile?.lightDirection}</div>
+          </div>
+          <div>
+            <span className="text-sm text-gray-500">나의 수준</span>
+            <div className="font-medium text-lg">{profile?.experienceLevel}</div>
           </div>
         </div>
 
-        <div className="space-y-3">
-          <Link
-            href="/feed"
-            className="block w-full px-4 py-4 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors"
-          >
-            이 환경으로 피드 보기
-          </Link>
-          <Link
-            href="/onboarding/setup"
-            className="block w-full px-4 py-3 bg-white text-gray-500 rounded-lg font-medium hover:bg-gray-50 transition-colors border border-gray-200"
-          >
-            환경 수정
-          </Link>
-        </div>
+        <Link
+          href="/"
+          className="block w-full px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+        >
+          시작하기
+        </Link>
       </div>
     </div>
   );
