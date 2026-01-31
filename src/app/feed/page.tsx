@@ -2,9 +2,11 @@
 
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useEnvironmentStore } from '@/features/environment-profile/stores/useEnvironmentStore';
 import { FeedList } from '@/features/feed/components/FeedList/FeedList';
 import { Button } from '@/core/components/Button';
+import { Loading } from '@/core/components/Loading';
 import { useEffect } from 'react';
 
 import { getResidenceLabel, getLightLabel, getExperienceLabel } from '@/features/environment-profile/utils/labels';
@@ -21,7 +23,7 @@ export default function FeedPage() {
         }
     }, [profile, router]);
 
-    if (!profile) return null;
+    if (!profile) return <div className="flex h-screen items-center justify-center"><Loading /></div>;
 
     return (
         <main className='min-h-screen bg-background pb-20'>
@@ -57,7 +59,7 @@ export default function FeedPage() {
                         className='flex-1 h-12 bg-white border-gray-100 font-bold text-gray-700'
                         onClick={() => {
                             // Reset post store and start failure post flow
-                            router.push('/posts/create');
+                            router.push('/posts/create/type');
                         }}
                     >
                         실패 기록
@@ -88,19 +90,20 @@ export default function FeedPage() {
             </div>
 
             {/* Bottom Navigation */}
+            {/* Bottom Navigation */}
             <nav className='fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4 z-20'>
-                <button onClick={() => router.push('/')} className='flex flex-col items-center gap-1 text-gray-400'>
+                <Link href="/" className='flex flex-col items-center gap-1 text-gray-400'>
                     <span className='text-xl'>🏠</span>
                     <span className='text-[10px] font-bold'>홈</span>
-                </button>
-                <button className='flex flex-col items-center gap-1 text-green-600'>
+                </Link>
+                <Link href="/feed" className='flex flex-col items-center gap-1 text-green-600'>
                     <span className='text-xl'>📋</span>
-                    <span className='text-[10px]'>기록</span>
-                </button>
-                <button onClick={() => router.push('/posts/create')} className='flex flex-col items-center gap-1 text-gray-400'>
+                    <span className='text-[10px]'>피드</span>
+                </Link>
+                <Link href="/posts/create/type" className='flex flex-col items-center gap-1 text-gray-400'>
                     <span className='text-xl'>✍️</span>
-                    <span className='text-[10px]'>작성</span>
-                </button>
+                    <span className='text-[10px]'>기록하기</span>
+                </Link>
                 <button className='flex flex-col items-center gap-1 text-gray-400'>
                     <span className='text-xl'>👤</span>
                     <span className='text-[10px]'>내정보</span>
