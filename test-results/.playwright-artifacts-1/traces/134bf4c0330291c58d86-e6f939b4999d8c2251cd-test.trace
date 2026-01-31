@@ -1,0 +1,20 @@
+{"version":8,"type":"context-options","origin":"testRunner","browserName":"","playwrightVersion":"1.58.0","options":{},"platform":"win32","wallTime":1769793768994,"monotonicTime":27619.879,"sdkLanguage":"javascript"}
+{"type":"before","callId":"hook@1","stepId":"hook@1","startTime":27628.642,"class":"Test","method":"hook","title":"Before Hooks","params":{},"stack":[]}
+{"type":"before","callId":"hook@2","stepId":"hook@2","parentId":"hook@1","startTime":27630.097,"class":"Test","method":"hook","title":"beforeEach hook","params":{},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\comparison.spec.ts","line":4,"column":8}]}
+{"type":"before","callId":"fixture@28","stepId":"fixture@28","parentId":"hook@2","startTime":27662.542,"class":"Test","method":"fixture","title":"Fixture \"browser\"","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@29","stepId":"pw:api@29","parentId":"fixture@28","startTime":27682.81,"class":"Test","method":"pw:api","title":"Launch browser","params":{"handleSIGINT":"false","tracesDir":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\test-results\\.playwright-artifacts-1\\traces","headless":"true","ignoreDefaultArgs":"undefined","ignoreAllDefaultArgs":"false","env":"undefined","timeout":"180000"},"stack":[]}
+{"type":"after","callId":"pw:api@29","endTime":28477.047,"annotations":[]}
+{"type":"after","callId":"fixture@28","endTime":28477.583,"annotations":[]}
+{"type":"before","callId":"fixture@32","stepId":"fixture@32","parentId":"hook@2","startTime":28481.881,"class":"Test","method":"fixture","title":"Fixture \"context\"","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@33","stepId":"pw:api@33","parentId":"fixture@32","startTime":28486.993,"class":"Test","method":"pw:api","title":"Create context","params":{"selectorEngines":"[]","testIdAttributeName":"data-testid","acceptDownloads":"accept","bypassCSP":"false","colorScheme":"light","deviceScaleFactor":"1","hasTouch":"false","ignoreHTTPSErrors":"false","isMobile":"false","javaScriptEnabled":"true","locale":"en-US","offline":"false","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.6 Safari/537.36","viewport":"Object","baseURL":"http://localhost:3000","serviceWorkers":"allow","noDefaultViewport":"false","extraHTTPHeaders":"undefined","storageState":"undefined","reducedMotion":"undefined","forcedColors":"undefined","contrast":"undefined","clientCertificates":"undefined"},"stack":[]}
+{"type":"after","callId":"pw:api@33","endTime":28504.52,"annotations":[]}
+{"type":"after","callId":"fixture@32","endTime":28510.345,"annotations":[]}
+{"type":"before","callId":"fixture@34","stepId":"fixture@34","parentId":"hook@2","startTime":28511.215,"class":"Test","method":"fixture","title":"Fixture \"page\"","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@35","stepId":"pw:api@35","parentId":"fixture@34","startTime":28514.785,"class":"Test","method":"pw:api","title":"Create page","params":{},"stack":[]}
+{"type":"after","callId":"pw:api@35","endTime":28800.372,"annotations":[]}
+{"type":"after","callId":"fixture@34","endTime":28800.635,"annotations":[]}
+{"type":"before","callId":"pw:api@36","stepId":"pw:api@36","parentId":"hook@2","startTime":28805.049,"class":"Test","method":"pw:api","title":"Navigate to \"/posts/create/type\"","params":{"url":"/posts/create/type","waitUntil":"load","timeout":"0"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\comparison.spec.ts","line":6,"column":16}]}
+{"type":"after","callId":"pw:api@36","endTime":31593.731,"annotations":[]}
+{"type":"after","callId":"hook@2","endTime":31594,"annotations":[]}
+{"type":"after","callId":"hook@1","endTime":31594.389,"annotations":[]}
+{"type":"before","callId":"pw:api@37","stepId":"pw:api@37","startTime":31601.783,"class":"Test","method":"pw:api","title":"Click getByText('Ask for Help')","params":{"selector":"internal:text=\"Ask for Help\"i","strict":"true","timeout":"0"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\comparison.spec.ts","line":11,"column":42}]}

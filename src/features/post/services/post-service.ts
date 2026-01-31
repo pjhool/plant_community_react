@@ -2,6 +2,7 @@ import { collection, addDoc, serverTimestamp, doc, updateDoc, getDoc } from 'fir
 import { db } from '@/core/services/firebase';
 import { Post, PostType } from '../../feed/types/post';
 import { StorageService } from '@/core/services/storage';
+import { AuthService } from '@/features/auth/services/auth-service';
 
 export const PostService = {
     /**
@@ -47,7 +48,9 @@ export const PostService = {
             const docRef = doc(db, 'posts', postId);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
-                return { id: docSnap.id, ...docSnap.data() } as Post;
+                const post = { id: docSnap.id, ...docSnap.data() } as Post;
+                const author = await AuthService.getUserProfile(post.authorId);
+                return { ...post, author: author || undefined };
             }
             return null;
         } catch (error) {
