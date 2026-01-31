@@ -1,11 +1,11 @@
-import {
-    collection,
-    query,
-    where,
-    orderBy,
-    limit,
-    startAfter,
-    getDocs,
+import { 
+    collection, 
+    query, 
+    where, 
+    orderBy, 
+    limit, 
+    startAfter, 
+    getDocs, 
     DocumentData,
     QueryDocumentSnapshot,
     QueryConstraint
@@ -13,7 +13,6 @@ import {
 import { db } from '@/core/services/firebase';
 import { Post, PostStatus, PostFilter } from '../types/post';
 import { EnvironmentProfile } from '@/features/environment-profile/types/environment';
-import { AuthService } from '@/features/auth/services/auth-service';
 
 const POSTS_PER_PAGE = 10;
 
@@ -22,7 +21,7 @@ export const FeedService = {
      * Get feed with optional filters
      */
     getFeed: async (
-        filter: PostFilter = {},
+        filter: PostFilter = {}, 
         lastDoc?: QueryDocumentSnapshot<DocumentData>
     ): Promise<{ posts: Post[], lastDoc?: QueryDocumentSnapshot<DocumentData> }> => {
         try {
@@ -60,22 +59,8 @@ export const FeedService = {
                 posts.push({ id: doc.id, ...doc.data() } as Post);
             });
 
-            // Join Author Data
-            const authorIds = Array.from(new Set(posts.map(p => p.authorId)));
-            const authorMap = new Map();
-
-            await Promise.all(authorIds.map(async (id) => {
-                const profile = await AuthService.getUserProfile(id);
-                if (profile) authorMap.set(id, profile);
-            }));
-
-            const joinedPosts = posts.map(post => ({
-                ...post,
-                author: authorMap.get(post.authorId)
-            }));
-
             return {
-                posts: joinedPosts,
+                posts,
                 lastDoc: querySnapshot.docs[querySnapshot.docs.length - 1]
             };
         } catch (error) {
@@ -88,7 +73,7 @@ export const FeedService = {
      * Get feed based on user environment
      */
     getEnvironmentProfileFeed: async (
-        userEnv: EnvironmentProfile,
+        userEnv: EnvironmentProfile, 
         lastDoc?: QueryDocumentSnapshot<DocumentData>
     ): Promise<{ posts: Post[], lastDoc?: QueryDocumentSnapshot<DocumentData> }> => {
         return FeedService.getFeed({

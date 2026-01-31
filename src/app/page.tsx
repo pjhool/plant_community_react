@@ -53,8 +53,6 @@ export default function HomePage() {
                     </section>
                 </div>
             </div>
-<<<<<<< HEAD
-
             {/* Bottom Navigation */}
             <nav className='fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4'>
                 <button onClick={() => router.push('/')} className='flex flex-col items-center gap-1 text-green-600'>
@@ -74,8 +72,6 @@ export default function HomePage() {
                     <span className='text-[10px]'>내정보</span>
                 </button>
             </nav>
-=======
->>>>>>> da17440a1d072ee8c434ef8b577e8450c7d0c6a5
         </main>
     );
 }
