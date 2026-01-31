@@ -7,35 +7,46 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    function isOwner(userId) {
-      return isSignedIn() && request.auth.uid == userId;
+    function isDocOwner(data) {
+      return isSignedIn() && (
+        (data.get('authorId', '') == request.auth.uid) ||
+        (data.get('userId', '') == request.auth.uid)
+      );
     }
 
     // Users collection
     match /users/{userId} {
       allow read: if isSignedIn();
-      allow write: if isOwner(userId);
+      allow write: if isSignedIn() && request.auth.uid == userId;
     }
 
     // Environments collection
     match /environments/{userId} {
       allow read: if isSignedIn();
-      allow write: if isOwner(userId);
+      allow write: if isSignedIn() && request.auth.uid == userId;
     }
-
 
     // Posts collection
     match /posts/{postId} {
       allow read: if isSignedIn();
       allow create: if isSignedIn();
-      allow update, delete: if isOwner(request.resource.data.userId);
+      allow update: if isSignedIn() && (
+        isDocOwner(resource.data) || 
+        // Allow anyone to increment commentsCount via transaction
+        (request.resource.data.commentsCount == resource.data.commentsCount + 1) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasAny(['commentsCount', 'updatedAt', 'views'])
+      );
+      allow delete: if isDocOwner(resource.data);
     }
 
     // Comments collection
     match /comments/{commentId} {
       allow read: if isSignedIn();
-      allow create: if isSignedIn();
-      allow update, delete: if isOwner(request.resource.data.userId);
+      allow create: if isSignedIn() && (
+        request.resource.data.authorId == request.auth.uid ||
+        request.resource.data.userId == request.auth.uid
+      );
+      allow update, delete: if isDocOwner(resource.data);
     }
   }
 }

@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { Loading } from '@/core/components/Loading';
 import { getResidenceLabel, getLightLabel, getExperienceLabel, getEnvironmentTag } from '@/features/environment-profile/utils/labels';
 import Image from 'next/image';
+import { CommentSection } from '@/features/comments/components/CommentSection';
 
 export default function PostDetailPage() {
     const { id } = useParams();
@@ -109,13 +110,9 @@ export default function PostDetailPage() {
                     <span>👁️ {post.views}</span>
                 </div>
 
-                {/* Comments Section Placeholder - Requirement 6.1.1 */}
+                {/* Comments Section */}
                 <div className='mt-8'>
-                    <h3 className='font-bold mb-4'>댓글 {post.commentsCount}</h3>
-                    <div className='bg-gray-50 rounded-xl p-8 text-center text-gray-400 text-sm'>
-                        아직 댓글이 없습니다.<br />
-                        유사한 환경의 경험자들의 조언을 기다려보세요!
-                    </div>
+                    <CommentSection post={post} />
                 </div>
             </div>
         </main>
