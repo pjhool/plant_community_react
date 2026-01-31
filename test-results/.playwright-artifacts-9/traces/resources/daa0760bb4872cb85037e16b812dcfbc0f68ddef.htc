@@ -1,0 +1,7 @@
+2:I["(app-pages-browser)/./node_modules/.pnpm/next@14.2.3_@babel+core@7.2_08899be6f4187c1dfae9c7f7f9d47e8e/node_modules/next/dist/client/components/client-page.js",["app-pages-internals","static/chunks/app-pages-internals.js"],"ClientPageRoot"]
+3:I["(app-pages-browser)/./src/app/page.tsx",["app/page","static/chunks/app/page.js"],"default"]
+1:D{"name":"","env":"Server"}
+4:D{"name":"","env":"Server"}
+0:["development",[["children","__PAGE__",["__PAGE__",{}],["__PAGE__",{},[["$L1",["$","$L2",null,{"props":{"params":{},"searchParams":{}},"Component":"$3"}]],null],null],[null,"$L4"]]]]
+4:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","1",{"charSet":"utf-8"}],["$","title","2",{"children":"ë°˜ë ¤ì‹ë¬¼ ì»¤ë®¤ë‹ˆí‹°"}],["$","meta","3",{"name":"description","content":"ë°˜ë ¤ì‹ë¬¼ ì´ˆë³´ì§‘ì‚¬ë¥¼ ìœ„í•œ ì†Œí†µ ê³µê°„"}]]
+1:null

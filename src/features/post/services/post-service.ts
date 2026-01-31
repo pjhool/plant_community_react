@@ -2,6 +2,7 @@ import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/fi
 import { db } from '@/core/services/firebase';
 import { Post, PostType } from '../../feed/types/post';
 import { StorageService } from '@/core/services/storage';
+import { AuthService } from '@/features/auth/services/auth-service';
 
 export const PostService = {
     /**
