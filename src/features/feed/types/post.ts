@@ -56,6 +56,7 @@ export interface Post {
     failureCause?: string;
     causeAnalysis?: string;
     learnedLesson?: string;
+    comparisonTarget?: 'ENVIRONMENT' | 'MANAGEMENT' | 'RESULT';
 }
 
 export interface FailurePost extends Post {

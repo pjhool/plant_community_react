@@ -15,6 +15,9 @@ interface PostFormData {
     failureCause: string;
     causeAnalysis?: string;
     learnedLesson?: string;
+    // Comparison Specific
+    comparisonTarget?: 'ENVIRONMENT' | 'MANAGEMENT' | 'RESULT';
+    isValidated?: boolean;
 }
 
 interface PostFormStore {
@@ -37,6 +40,8 @@ const initialData: PostFormData = {
     plant: { name: '', imageUrls: [] },
     failureCauses: [],
     failureCause: '',
+    comparisonTarget: undefined,
+    isValidated: false,
 };
 
 export const usePostFormStore = create<PostFormStore>()(
