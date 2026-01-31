@@ -20,9 +20,13 @@ function TypeContent() {
 
   useEffect(() => {
     const defaultType = searchParams.get('default');
+
     if (defaultType === 'COMPARISON') {
-      updateData({ type: PostType.COMPARISON });
-    } else if (!data.type || data.type === PostType.SURVIVAL) {
+      if (data.type !== PostType.COMPARISON) {
+        updateData({ type: PostType.COMPARISON });
+      }
+    } else if (!data.type) {
+      // Only set default if no type is selected
       updateData({ type: PostType.FAILURE });
     }
   }, [searchParams, data.type, updateData]);
