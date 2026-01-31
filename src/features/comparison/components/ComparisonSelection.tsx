@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Post } from '../../feed/types/post';
 import { cn } from '@/core/utils/cn';
 
@@ -14,7 +15,7 @@ export const ComparisonSelection = ({ posts, selectedIds, onSelect }: Comparison
       {posts.map((post) => {
         const isSelected = selectedIds.includes(post.id);
         return (
-          <div 
+          <div
             key={post.id}
             onClick={() => onSelect(post.id)}
             className={cn(
@@ -22,8 +23,15 @@ export const ComparisonSelection = ({ posts, selectedIds, onSelect }: Comparison
               isSelected ? "border-primary bg-primary/5 shadow-sm" : "border-muted hover:border-muted-foreground/20 bg-card"
             )}
           >
-            <div className="w-16 h-16 rounded bg-muted overflow-hidden shrink-0">
-              {post.images[0] && <img src={post.images[0]} alt="" className="w-full h-full object-cover" />}
+            <div className="w-16 h-16 rounded bg-muted overflow-hidden shrink-0 relative">
+              {post.images[0] && (
+                <Image
+                  src={post.images[0]}
+                  alt={post.title}
+                  fill
+                  className="object-cover"
+                />
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm truncate">{post.title || 'Untitled Failure'}</p>
