@@ -1,5 +1,6 @@
 import { Post } from '../../types/post';
 import { Button } from '@/core/components/Button';
+import Image from 'next/image';
 
 interface PostCardProps {
     post: Post;
@@ -8,16 +9,17 @@ interface PostCardProps {
 
 export const PostCard = ({ post, onClick }: PostCardProps) => {
     return (
-        <div 
+        <div
             className="border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer bg-card text-card-foreground"
             onClick={onClick}
         >
             {post.images && post.images.length > 0 && (
-                <div className="w-full h-48 bg-muted rounded-md mb-4 overflow-hidden">
-                    <img 
-                        src={post.images[0]} 
-                        alt={post.title} 
-                        className="w-full h-full object-cover"
+                <div className="w-full h-48 bg-muted rounded-md mb-4 overflow-hidden relative">
+                    <Image
+                        src={post.images[0]}
+                        alt={post.title}
+                        fill
+                        className="object-cover"
                     />
                 </div>
             )}

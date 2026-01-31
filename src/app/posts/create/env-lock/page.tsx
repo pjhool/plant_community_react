@@ -2,25 +2,27 @@
 
 import { useEffect } from 'react';
 import { usePostFormStore } from '@/features/post/stores/usePostFormStore';
-import { useEnvironmentStore } from '@/features/environment-profile/stores/useEnvironmentStore';
+import { useEnvironment } from '@/features/environment-profile/hooks/use-environment';
+import { useAuth } from '@/features/auth/hooks/use-auth';
 import { Button } from '@/core/components/Button';
 import { useRouter } from 'next/navigation';
 import { Loading } from '@/core/components/Loading';
 
 export default function EnvLockPage() {
   const router = useRouter();
-  const { profile, isLoading } = useEnvironmentStore();
+  const { user } = useAuth();
+  const { profile, isLoading } = useEnvironment(user?.uid);
   const { updateData, nextStep } = usePostFormStore();
 
   useEffect(() => {
     if (profile) {
-      updateData({ 
+      updateData({
         environment: {
-            residenceType: profile.residenceType,
-            lightDirection: profile.lightDirection,
-            experienceLevel: profile.experienceLevel,
-            userId: profile.userId,
-            location: profile.location
+          residenceType: profile.residenceType,
+          lightDirection: profile.lightDirection,
+          experienceLevel: profile.experienceLevel,
+          userId: profile.userId,
+          location: profile.location
         } as any
       });
     }
@@ -37,7 +39,7 @@ export default function EnvLockPage() {
     <div className="space-y-8">
       <div className="space-y-2">
         <h1 className="text-2xl font-bold">Snapshot your environment</h1>
-        <p className="text-muted-foreground">We'll attach your current growing conditions to this post so others can compare.</p>
+        <p className="text-muted-foreground">We&apos;ll attach your current growing conditions to this post so others can compare.</p>
       </div>
 
       {profile ? (
