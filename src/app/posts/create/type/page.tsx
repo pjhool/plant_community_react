@@ -3,25 +3,29 @@
 import { usePostFormStore } from '@/features/post/stores/usePostFormStore';
 import { PostType } from '@/features/feed/types/post';
 import { Button } from '@/core/components/Button';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { cn } from '@/core/utils/cn';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 
 const TYPES = [
   { id: PostType.SURVIVAL, label: '⭕ 잘 자라고 있어요', description: '식물이 자라는 기쁜 소식을 공유해주세요.' },
   { id: PostType.FAILURE, label: '❌ 실패했어요', description: '실패 기록은 같은 환경의 집사들에게 큰 도움이 돼요.' },
+  { id: PostType.COMPARISON, label: '🔍 비교 질문 🔒', description: '다른 집사의 환경이나 관리법과 차이를 비교해봐요.' },
 ];
 
-export default function TypePage() {
+function TypeContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data, updateData, nextStep } = usePostFormStore();
 
-  // Initialize with FAILURE if no type is selected yet
   useEffect(() => {
-    if (!data.type || data.type === PostType.SURVIVAL) {
+    const defaultType = searchParams.get('default');
+    if (defaultType === 'COMPARISON') {
+      updateData({ type: PostType.COMPARISON });
+    } else if (!data.type || data.type === PostType.SURVIVAL) {
       updateData({ type: PostType.FAILURE });
     }
-  }, []);
+  }, [searchParams]);
 
   const handleSelect = (type: PostType) => {
     updateData({ type });
@@ -65,5 +69,13 @@ export default function TypePage() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export default function TypePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TypeContent />
+    </Suspense>
   );
 }

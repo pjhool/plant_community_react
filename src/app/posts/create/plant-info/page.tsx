@@ -41,6 +41,8 @@ export default function PlantInfoPage() {
 
     if (data.type === PostType.FAILURE) {
       router.push('/posts/create/causes');
+    } else if (data.type === PostType.COMPARISON) {
+      router.push('/posts/create/comparison');
     } else {
       router.push('/posts/create/description');
     }
