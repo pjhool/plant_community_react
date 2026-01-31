@@ -65,6 +65,7 @@ export const FeedService = {
             const authorMap = new Map();
 
             await Promise.all(authorIds.map(async (id) => {
+                if (!id) return;
                 const profile = await AuthService.getUserProfile(id);
                 if (profile) authorMap.set(id, profile);
             }));
