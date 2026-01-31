@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Comment } from '../types/comment';
 import { format } from 'date-fns';
 import { cn } from '@/core/utils/cn';
@@ -12,7 +13,15 @@ export const CommentItem = ({ comment, isAuthor }: CommentItemProps) => {
   return (
     <div className="flex gap-3 py-4">
       <div className="w-8 h-8 rounded-full bg-muted shrink-0 overflow-hidden">
-        {comment.author.photoURL && <img src={comment.author.photoURL} alt="" className="w-full h-full object-cover" />}
+        {comment.author.photoURL && (
+          <Image
+            src={comment.author.photoURL}
+            alt={comment.author.displayName || ''}
+            width={32}
+            height={32}
+            className="w-full h-full object-cover"
+          />
+        )}
       </div>
       <div className="flex-1 space-y-1">
         <div className="flex items-center gap-2">
