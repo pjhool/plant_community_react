@@ -87,7 +87,7 @@ export default function HomePage() {
                     <span className='text-xl'>🏠</span>
                     <span className='text-[10px] font-bold'>홈</span>
                 </button>
-                <button className='flex flex-col items-center gap-1 text-gray-400'>
+                <button onClick={() => router.push('/feed')} className='flex flex-col items-center gap-1 text-gray-400'>
                     <span className='text-xl'>📋</span>
                     <span className='text-[10px]'>기록</span>
                 </button>
