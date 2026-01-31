@@ -53,6 +53,29 @@ export default function HomePage() {
                     </section>
                 </div>
             </div>
+<<<<<<< HEAD
+
+            {/* Bottom Navigation */}
+            <nav className='fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4'>
+                <button onClick={() => router.push('/')} className='flex flex-col items-center gap-1 text-green-600'>
+                    <span className='text-xl'>🏠</span>
+                    <span className='text-[10px] font-bold'>홈</span>
+                </button>
+                <button onClick={() => router.push('/feed')} className='flex flex-col items-center gap-1 text-gray-400'>
+                    <span className='text-xl'>📋</span>
+                    <span className='text-[10px]'>기록</span>
+                </button>
+                <button className='flex flex-col items-center gap-1 text-gray-400'>
+                    <span className='text-xl'>✍️</span>
+                    <span className='text-[10px]'>작성</span>
+                </button>
+                <button className='flex flex-col items-center gap-1 text-gray-400'>
+                    <span className='text-xl'>👤</span>
+                    <span className='text-[10px]'>내정보</span>
+                </button>
+            </nav>
+=======
+>>>>>>> da17440a1d072ee8c434ef8b577e8450c7d0c6a5
         </main>
     );
 }
