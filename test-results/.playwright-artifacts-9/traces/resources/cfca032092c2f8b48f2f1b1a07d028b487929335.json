@@ -1,0 +1,26 @@
+{
+  "kind": "identitytoolkit#GetAccountInfoResponse",
+  "users": [
+    {
+      "localId": "sK8TLJ6spmZm67zlktz7LCvv05z1",
+      "email": "test@example.com",
+      "displayName": "Test User",
+      "passwordHash": "UkVEQUNURUQ=",
+      "emailVerified": false,
+      "passwordUpdatedAt": 1769792508569,
+      "providerUserInfo": [
+        {
+          "providerId": "password",
+          "displayName": "Test User",
+          "federatedId": "test@example.com",
+          "email": "test@example.com",
+          "rawId": "test@example.com"
+        }
+      ],
+      "validSince": "1769792508",
+      "lastLoginAt": "1769793793797",
+      "createdAt": "1769792508569",
+      "lastRefreshAt": "2026-01-30T17:23:13.797Z"
+    }
+  ]
+}
