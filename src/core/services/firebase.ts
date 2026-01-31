@@ -22,7 +22,9 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 
 // Initialize Firestore
-const db = getFirestore(app);
+const db = initializeFirestore(app, {
+    ignoreUndefinedProperties: true,
+});
 
 const storage = getStorage(app);
 
