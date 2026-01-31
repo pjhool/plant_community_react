@@ -25,7 +25,7 @@ function TypeContent() {
     } else if (!data.type || data.type === PostType.SURVIVAL) {
       updateData({ type: PostType.FAILURE });
     }
-  }, [searchParams]);
+  }, [searchParams, data.type, updateData]);
 
   const handleSelect = (type: PostType) => {
     updateData({ type });

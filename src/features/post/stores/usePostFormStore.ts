@@ -18,6 +18,11 @@ interface PostFormData {
     // Comparison Specific
     comparisonTarget?: 'ENVIRONMENT' | 'MANAGEMENT' | 'RESULT';
     isValidated?: boolean;
+    // Survival Specific
+    managementSummary?: string;
+    waterCycle?: string;
+    sunlightLevel?: string;
+    ventilation?: string;
 }
 
 interface PostFormStore {

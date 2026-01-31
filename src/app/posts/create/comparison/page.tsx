@@ -26,7 +26,7 @@ export default function ComparisonIntroPage() {
                         <span>🔒</span> 비교 질문 작성
                     </div>
                     <h1 className='text-3xl font-bold tracking-tight leading-tight'>
-                        다른 집사와의<br />'조건 차이'를 이해해봐요
+                        다른 집사와의<br />&apos;조건 차이&apos;를 이해해봐요
                     </h1>
                     <p className='text-gray-500 leading-relaxed'>
                         이 질문은 성과를 비교하는 것이 아니라,<br />
