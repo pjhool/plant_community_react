@@ -1,4 +1,4 @@
-import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
 import { Post, PostType } from '../../feed/types/post';
 import { StorageService } from '@/core/services/storage';
@@ -26,7 +26,7 @@ export const PostService = {
             let imageUrls: string[] = [];
             if (imageFiles.length > 0) {
                 imageUrls = await StorageService.uploadImages(imageFiles, `posts/${docRef.id}`);
-                
+
                 // 3. Update document with image URLs
                 await updateDoc(doc(db, 'posts', docRef.id), {
                     images: imageUrls,
@@ -36,6 +36,33 @@ export const PostService = {
             return docRef.id;
         } catch (error) {
             console.error('Error creating post:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Get a single post by ID
+     */
+    getPost: async (postId: string): Promise<Post | null> => {
+        try {
+            const docRef = doc(db, 'posts', postId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const post = { id: docSnap.id, ...docSnap.data() } as Post;
+
+                // Join Author Data
+                if (post.authorId) {
+                    const author = await AuthService.getUserProfile(post.authorId);
+                    if (author) {
+                        return { ...post, author };
+                    }
+                }
+
+                return post;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error fetching post:', error);
             throw error;
         }
     }
