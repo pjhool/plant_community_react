@@ -6,23 +6,17 @@ import { PostService } from '@/features/post/services/post-service';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { Button } from '@/core/components/Button';
 import { useRouter } from 'next/navigation';
+import { PostType, PostStatus } from '@/features/feed/types/post';
 
 export default function SummaryPage() {
   const router = useRouter();
   const { user } = useAuth();
   const { data, reset } = usePostFormStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setSelectedFiles(Array.from(e.target.files));
-    }
-  };
 
   const handleSubmit = async () => {
     if (!user || !user.uid) {
-      alert('Your session seems to be invalid. Please sign in again.');
+      alert('세션이 만료되었습니다. 다시 로그인해주세요.');
       return;
     }
     setIsSubmitting(true);
@@ -34,72 +28,93 @@ export default function SummaryPage() {
           photoURL: user.photoURL || null
         } as any,
         type: data.type,
-        status: 'PUBLISHED' as any,
-        title: data.title,
+        status: PostStatus.PUBLISHED,
+        title: data.title || (data.plant?.name ? `${data.plant.name} 실패 기록` : '식물 실패 기록'),
         content: data.content,
         images: [],
         environment: data.environment as any,
         plant: data.plant as any,
+        // New fields for failure post
+        failureStatus: data.plant?.status as any,
+        failureDuration: data.plant?.duration as any,
+        failureCauses: data.failureCauses,
+        failureCause: data.failureCauses.join(', '), // Summary of causes
         likes: 0,
         views: 0,
         commentsCount: 0
-      }, selectedFiles);
+      }, data.imageFiles || []);
 
       reset();
       router.push('/posts/create/success');
     } catch (error) {
       console.error('Submission failed:', error);
-      alert('Failed to publish post. Please try again.');
+      alert('게시물 공유에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const isFailure = data.type === PostType.FAILURE;
+
   return (
-    <div className='space-y-8'>
-      <div className='space-y-2'>
-        <h1 className='text-2xl font-bold'>Review and Publish</h1>
-        <p className='text-muted-foreground'>Almost done! Take a look and add some photos.</p>
+    <div className='flex flex-col min-h-[70vh] justify-center space-y-8 px-2'>
+      <div className='space-y-4 text-center'>
+        <h1 className='text-3xl font-bold tracking-tight'>이렇게 공유돼요</h1>
       </div>
 
-      <div className='space-y-6'>
-        <div className='bg-muted/30 p-6 rounded-xl border space-y-4 text-sm'>
-          <div>
-            <p className='text-xs text-muted-foreground uppercase tracking-wider font-semibold'>Category</p>
-            <p className='font-medium'>{data.type}</p>
+      <div className='bg-white rounded-3xl border-2 border-gray-100 p-8 space-y-6 shadow-sm'>
+        <div className='space-y-4'>
+          <div className='flex items-start gap-3'>
+            <span className='text-xl'>🏠</span>
+            <div className='space-y-1'>
+              <p className='text-xs text-gray-400 font-bold uppercase'>재배 환경</p>
+              <p className='text-lg font-bold text-gray-800'>
+                {data.environment?.residenceType} · {data.environment?.lightDirection} · {data.environment?.experienceLevel}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className='text-xs text-muted-foreground uppercase tracking-wider font-semibold'>Plant</p>
-            <p className='font-medium'>{data.plant?.name} {data.plant?.species && `(${data.plant.species})`}</p>
-          </div>
-          <div>
-            <p className='text-xs text-muted-foreground uppercase tracking-wider font-semibold'>Title</p>
-            <p className='font-medium'>{data.title}</p>
-          </div>
-          <div className='pt-2 border-t'>
-            <p className='text-xs text-muted-foreground uppercase tracking-wider font-semibold mb-1'>Content</p>
-            <p className='whitespace-pre-wrap'>{data.content}</p>
-          </div>
-        </div>
 
-        <div className='space-y-3'>
-          <label className='text-sm font-medium'>Add Photos</label>
-          <input
-            type='file'
-            multiple
-            accept='image/*'
-            onChange={handleFileChange}
-            className='block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20'
-          />
-          {selectedFiles.length > 0 && (
-            <p className='text-xs text-muted-foreground'>{selectedFiles.length} images selected</p>
+          <div className='flex items-start gap-3'>
+            <span className='text-xl'>🪴</span>
+            <div className='space-y-1'>
+              <p className='text-xs text-gray-400 font-bold uppercase'>식물 정보</p>
+              <p className='text-lg font-bold text-gray-800'>
+                {data.plant?.name} ({data.plant?.duration}일 거주)
+              </p>
+              <p className='text-sm font-bold text-red-500'>
+                상태: {data.plant?.status === 'DEAD' ? '❌ 사망' : '⭕ 회복불가'}
+              </p>
+            </div>
+          </div>
+
+          {isFailure && (
+            <div className='flex items-start gap-3 border-t border-gray-100 pt-4'>
+              <span className='text-xl'>🧐</span>
+              <div className='space-y-1'>
+                <p className='text-xs text-gray-400 font-bold uppercase'>추정 원인</p>
+                <p className='text-lg font-bold text-gray-800'>
+                  {data.failureCauses?.length > 0 ? data.failureCauses.join(', ') : '원인 미상'}
+                </p>
+              </div>
+            </div>
           )}
         </div>
 
-        <div className='pt-4 flex gap-4'>
-          <Button variant='outline' className='flex-1' onClick={() => router.back()} disabled={isSubmitting}>Back</Button>
-          <Button className='flex-[2]' size='lg' onClick={handleSubmit} isLoading={isSubmitting} disabled={isSubmitting}>Publish Post</Button>
+        <div className='bg-gray-50 p-4 rounded-xl text-center space-y-1'>
+          <p className='text-sm text-gray-600 font-medium'>이 기록은 같은 환경의<br />집사들에게만 보여요</p>
         </div>
+      </div>
+
+      <div className='pt-6 flex gap-3'>
+        <Button variant='outline' className='flex-1 h-14 rounded-xl border-gray-200' onClick={() => router.back()} disabled={isSubmitting}>뒤로</Button>
+        <Button
+          className='flex-[2] h-14 text-lg font-bold rounded-xl bg-green-600 hover:bg-green-700'
+          onClick={handleSubmit}
+          isLoading={isSubmitting}
+          disabled={isSubmitting}
+        >
+          공유하기
+        </Button>
       </div>
     </div>
   );
