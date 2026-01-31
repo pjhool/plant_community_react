@@ -91,28 +91,23 @@ export const SetupForm = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-center">당신의 집 환경을 알려주세요</h2>
+      </div>
       <StepIndicator currentStep={step} totalSteps={3} />
 
       <div className="min-h-[300px]">
         {renderStep()}
       </div>
 
-      <div className="mt-8 flex gap-4">
-        {!isFirstStep && (
-          <button
-            onClick={prevStep}
-            className="flex-1 px-4 py-3 border border-gray-200 rounded-lg text-gray-600 font-medium hover:bg-gray-50"
-          >
-            이전
-          </button>
-        )}
+      <div className="mt-8">
         <button
           onClick={handleNext}
           disabled={!canGoNext() || isSaving}
-          className={`flex-1 px-4 py-3 rounded-lg text-white font-medium transition-colors ${canGoNext() && !isSaving ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-300 cursor-not-allowed'
+          className={`w-full px-4 py-3 rounded-lg text-white font-medium transition-colors ${canGoNext() && !isSaving ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-300 cursor-not-allowed'
             }`}
         >
-          {isSaving ? '저장 중...' : isLastStep ? '완료' : '다음'}
+          {isSaving ? '저장 중...' : isLastStep ? '이 환경으로 피드 보기' : '다음'}
         </button>
       </div>
     </div>

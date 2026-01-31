@@ -10,13 +10,13 @@ interface FeedListProps {
 }
 
 export const FeedList = ({ filter }: FeedListProps) => {
-    const { 
-        data, 
-        isLoading, 
-        isError, 
-        fetchNextPage, 
-        hasNextPage, 
-        isFetchingNextPage 
+    const {
+        data,
+        isLoading,
+        isError,
+        fetchNextPage,
+        hasNextPage,
+        isFetchingNextPage
     } = useFeed(filter);
 
     if (isLoading) {
@@ -24,37 +24,43 @@ export const FeedList = ({ filter }: FeedListProps) => {
     }
 
     if (isError) {
-        return <ErrorMessage message='Failed to load feed. Please try again.' />;
+        return <ErrorMessage message='피드를 불러오는데 실패했습니다.' />;
     }
 
     const allPosts = data?.pages.flatMap(page => page.posts) || [];
 
     if (allPosts.length === 0) {
         return (
-            <div className='text-center py-20 text-muted-foreground border-2 border-dashed rounded-xl bg-muted/20'>
-                <p className='text-lg'>No posts found.</p>
-                <p className='text-sm'>Try changing your filters or be the first to share your story!</p>
+            <div className='text-center py-20 text-muted-foreground border-2 border-dashed rounded-2xl bg-muted/20'>
+                <p className='text-lg mb-2'>아직 기록이 없어요 🌿</p>
+                <p className='text-sm'>첫 번째 주인공이 되어 식물 이야기를 들려주세요!</p>
             </div>
         );
     }
 
     return (
-        <div className='space-y-8'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+        <div className='space-y-6'>
+            {allPosts.length < 3 && (
+                <div className='bg-orange-50 border border-orange-100 rounded-xl p-4 mb-6 text-sm text-orange-800 text-center font-medium'>
+                    ⚠️ 아직 기록이 적어요. 다른 환경의 기록도 참고해보세요!
+                </div>
+            )}
+
+            <div className='flex flex-col gap-4'>
                 {allPosts.map((post) => (
                     <PostCard key={post.id} post={post} />
                 ))}
             </div>
-            
+
             {hasNextPage && (
                 <div className='flex justify-center py-6'>
-                    <Button 
-                        onClick={() => fetchNextPage()} 
+                    <Button
+                        onClick={() => fetchNextPage()}
                         disabled={isFetchingNextPage}
-                        variant='secondary'
-                        size='lg'
+                        variant='outline'
+                        className='w-full max-w-xs'
                     >
-                        {isFetchingNextPage ? 'Loading more...' : 'Load More Posts'}
+                        {isFetchingNextPage ? '불러오는 중...' : '더 많은 기록 보기'}
                     </Button>
                 </div>
             )}

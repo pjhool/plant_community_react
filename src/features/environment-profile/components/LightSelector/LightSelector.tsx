@@ -8,12 +8,10 @@ interface LightSelectorProps {
 
 const LIGHT_OPTIONS: { label: string; value: LightDirection }[] = [
   { label: '남향', value: 'SOUTH' },
-  { label: '남동향', value: 'SOUTH_EAST' },
-  { label: '남서향', value: 'SOUTH_WEST' },
   { label: '동향', value: 'EAST' },
-  { label: '서향', value: 'WEST' },
   { label: '북향', value: 'NORTH' },
-  { label: '빛이 거의 없음', value: 'NONE' },
+  { label: '서향', value: 'WEST' },
+  { label: '불명', value: 'UNKNOWN' },
 ];
 
 export const LightSelector: React.FC<LightSelectorProps> = ({ value, onChange }) => {
@@ -24,11 +22,10 @@ export const LightSelector: React.FC<LightSelectorProps> = ({ value, onChange })
           key={option.value}
           type="button"
           onClick={() => onChange(option.value)}
-          className={`p-4 border rounded-lg text-center transition-colors ${
-            value === option.value
+          className={`p-4 border rounded-lg text-center transition-colors ${value === option.value
               ? 'bg-yellow-100 border-yellow-500 text-yellow-700'
               : 'bg-white border-gray-200 hover:border-yellow-300'
-          }`}
+            }`}
         >
           {option.label}
         </button>

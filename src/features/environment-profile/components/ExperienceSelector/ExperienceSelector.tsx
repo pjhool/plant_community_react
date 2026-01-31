@@ -7,9 +7,9 @@ interface ExperienceSelectorProps {
 }
 
 const EXPERIENCE_OPTIONS: { label: string; value: ExperienceLevel; description: string }[] = [
-  { label: '초보', value: 'BEGINNER', description: '식물을 처음 키워보거나 아직 익숙하지 않아요.' },
-  { label: '중급', value: 'INTERMEDIATE', description: '식물을 여러 번 키워봤고 관리법을 어느 정도 알아요.' },
-  { label: '전문가', value: 'EXPERT', description: '식물 박사님! 어려운 식물도 척척 키워내요.' },
+  { label: '처음', value: 'FIRST', description: '식물을 처음 키워봐요.' },
+  { label: '몇 번 죽여봄', value: 'FAILED', description: '실패한 경험이 있어요.' },
+  { label: '어느 정도 키움', value: 'SUCCESS', description: '유지해본 경험이 있어요.' },
 ];
 
 export const ExperienceSelector: React.FC<ExperienceSelectorProps> = ({ value, onChange }) => {
@@ -20,11 +20,10 @@ export const ExperienceSelector: React.FC<ExperienceSelectorProps> = ({ value, o
           key={option.value}
           type="button"
           onClick={() => onChange(option.value)}
-          className={`p-4 border rounded-lg text-left transition-colors ${
-            value === option.value
+          className={`p-4 border rounded-lg text-left transition-colors ${value === option.value
               ? 'bg-blue-100 border-blue-500'
               : 'bg-white border-gray-200 hover:border-blue-300'
-          }`}
+            }`}
         >
           <div className={`font-bold ${value === option.value ? 'text-blue-700' : 'text-gray-900'}`}>
             {option.label}
