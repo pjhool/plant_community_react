@@ -10,8 +10,9 @@ interface PostFormData {
     images: string[];
     imageFiles: File[];
     environment: Partial<EnvironmentProfileSnapshot>;
-    plant: Partial<PlantInfo>;
-    failureCause?: string;
+    plant: Partial<PlantInfo> & { duration?: number; status?: 'DEAD' | 'RECOVER_IMPOSSIBLE' };
+    failureCauses: string[];
+    failureCause: string;
     causeAnalysis?: string;
     learnedLesson?: string;
 }
@@ -27,13 +28,15 @@ interface PostFormStore {
 }
 
 const initialData: PostFormData = {
-    type: 'GENERAL' as PostType,
+    type: PostType.SURVIVAL, // default to survival but UI will focus failure
     title: '',
     content: '',
     images: [],
     imageFiles: [],
     environment: {},
     plant: { name: '', imageUrls: [] },
+    failureCauses: [],
+    failureCause: '',
 };
 
 export const usePostFormStore = create<PostFormStore>()(

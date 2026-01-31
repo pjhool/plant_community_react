@@ -23,6 +23,8 @@ export interface PlantInfo {
     species?: string;
     adoptionDate?: Timestamp;
     imageUrls: string[];
+    duration?: number;
+    status?: string;
 }
 
 export interface Post {
@@ -34,23 +36,34 @@ export interface Post {
     title: string;
     content: string;
     images: string[];
-    
+
     // Core Data
     environment: EnvironmentProfileSnapshot;
     plant: PlantInfo;
-    
+
     // Metadata
     views: number;
     likes: number;
     commentsCount: number;
-    
+
     createdAt: Timestamp;
     updatedAt: Timestamp;
+
+    // Failure Specific (Optional)
+    failureStatus?: 'DEAD' | 'RECOVER_IMPOSSIBLE';
+    failureDuration?: number;
+    failureCauses?: string[];
+    failureCause?: string;
+    causeAnalysis?: string;
+    learnedLesson?: string;
 }
 
 export interface FailurePost extends Post {
     type: PostType.FAILURE;
-    failureCause: string;
+    failureStatus: 'DEAD' | 'RECOVER_IMPOSSIBLE';
+    failureDuration: number;
+    failureCauses: string[];
+    failureCause: string; // Existing, can be used for summary or primary cause
     causeAnalysis?: string;
     learnedLesson?: string;
 }
