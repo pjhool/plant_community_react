@@ -1,6 +1,8 @@
-export type ResidenceType = 'STUDIO' | 'APARTMENT' | 'HOUSE';
-export type LightDirection = 'NORTH' | 'EAST' | 'SOUTH' | 'WEST' | 'UNKNOWN';
-export type ExperienceLevel = 'FIRST' | 'FAILED' | 'SUCCESS';
+export type ResidenceType = 'APARTMENT' | 'VILLA' | 'HOUSE' | 'OFFICE' | 'OTHER';
+
+export type LightDirection = 'SOUTH' | 'SOUTH_EAST' | 'SOUTH_WEST' | 'EAST' | 'WEST' | 'NORTH' | 'NONE';
+
+export type ExperienceLevel = 'BEGINNER' | 'INTERMEDIATE' | 'EXPERT';
 
 export interface EnvironmentProfile {
   id?: string;
@@ -8,7 +10,7 @@ export interface EnvironmentProfile {
   residenceType: ResidenceType;
   lightDirection: LightDirection;
   experienceLevel: ExperienceLevel;
-  location?: string;
+  location?: string; // e.g., "Seoul, Korea"
   createdAt: string;
   updatedAt: string;
 }
