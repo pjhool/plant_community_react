@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "email": "test@example.com",
+      "password": "password123",
+      "displayName": "Test User",
+      "uid": "test-uid-1"
+    }
+  ],
+  "invalidInputs": {
+    "login": {
+      "wrongPassword": "wrongpassword",
+      "nonExistentEmail": "no-user@example.com"
+    },
+    "signup": {
+      "shortPassword": "123",
+      "invalidEmail": "invalid-email"
+    }
+  },
+  "posts": [
+    {
+      "type": "FAILURE",
+      "plant": {
+        "name": "Monstera",
+        "species": "Deliciosa"
+      },
+      "title": "My Monstera is dying",
+      "content": "I think I overwatered it.",
+      "failureCause": "Overwatering"
+    }
+  ]
+}
