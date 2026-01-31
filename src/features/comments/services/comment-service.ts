@@ -1,65 +1,80 @@
-import { 
-    collection, 
-    query, 
-    where, 
-    orderBy, 
-    getDocs, 
+import {
+    collection,
     addDoc,
     serverTimestamp,
-    increment,
+    query,
+    where,
+    orderBy,
+    getDocs,
     doc,
-    updateDoc
+    runTransaction,
+    Timestamp
 } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
 import { Comment } from '../types/comment';
 
 export const CommentService = {
     /**
-     * Fetch comments for a specific post
+     * 댓글 작성 (트랜잭션 사용: 댓글 추가 + 게시물 댓글 수 증가)
      */
-    getComments: async (postId: string): Promise<Comment[]> => {
+    createComment: async (
+        postId: string,
+        commentData: Omit<Comment, 'id' | 'createdAt' | 'updatedAt' | 'likes'>
+    ): Promise<string> => {
+        const postRef = doc(db, 'posts', postId);
+        const commentsRef = collection(db, 'comments');
+        const newCommentRef = doc(commentsRef);
+
         try {
-            const q = query(
-                collection(db, 'comments'),
-                where('postId', '==', postId),
-                orderBy('createdAt', 'asc')
-            );
-            
-            const querySnapshot = await getDocs(q);
-            const comments: Comment[] = [];
-            querySnapshot.forEach((doc) => {
-                comments.push({ id: doc.id, ...doc.data() } as Comment);
+            await runTransaction(db, async (transaction) => {
+                const postDoc = await transaction.get(postRef);
+                if (!postDoc.exists()) {
+                    throw new Error('Post does not exist');
+                }
+
+                // 1. 댓글 추가
+                transaction.set(newCommentRef, {
+                    ...commentData,
+                    postId,
+                    likes: 0,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                });
+
+                // 2. 게시물 댓글 수 업데이트
+                const currentCount = postDoc.data().commentsCount || 0;
+                transaction.update(postRef, {
+                    commentsCount: currentCount + 1,
+                    updatedAt: serverTimestamp(),
+                });
             });
-            
-            return comments;
+
+            return newCommentRef.id;
         } catch (error) {
-            console.error('Error fetching comments:', error);
+            console.error('Error creating comment with transaction:', error);
             throw error;
         }
     },
 
     /**
-     * Add a comment to a post
+     * 특정 게시물의 댓글 목록 조회
      */
-    addComment: async (data: Omit<Comment, 'id' | 'createdAt' | 'updatedAt' | 'likes'>): Promise<string> => {
+    getComments: async (postId: string): Promise<Comment[]> => {
         try {
-            // 1. Add comment document
-            const docRef = await addDoc(collection(db, 'comments'), {
-                ...data,
-                likes: 0,
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp(),
-            });
+            const commentsRef = collection(db, 'comments');
+            const q = query(
+                commentsRef,
+                where('postId', '==', postId),
+                orderBy('createdAt', 'asc') // 기본은 생성순, 이후 클라이언트 정렬 적용 가능
+            );
 
-            // 2. Increment comment count on the post
-            const postRef = doc(db, 'posts', data.postId);
-            await updateDoc(postRef, {
-                commentsCount: increment(1)
-            });
-
-            return docRef.id;
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            })) as Comment[];
         } catch (error) {
-            console.error('Error adding comment:', error);
+            console.error('Error fetching comments:', error);
             throw error;
         }
     }
