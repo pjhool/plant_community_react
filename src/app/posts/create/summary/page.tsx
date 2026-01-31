@@ -21,6 +21,11 @@ export default function SummaryPage() {
     }
     setIsSubmitting(true);
     try {
+      const isComparison = data.type === PostType.COMPARISON;
+      const defaultTitle = isComparison
+        ? `${data.plant?.name} 비교 질문`
+        : (data.plant?.name ? `${data.plant.name} 실패 기록` : '식물 실패 기록');
+
       await PostService.createPost({
         authorId: user.uid,
         author: {
@@ -29,16 +34,18 @@ export default function SummaryPage() {
         } as any,
         type: data.type,
         status: PostStatus.PUBLISHED,
-        title: data.title || (data.plant?.name ? `${data.plant.name} 실패 기록` : '식물 실패 기록'),
+        title: data.title || defaultTitle,
         content: data.content,
         images: [],
         environment: data.environment as any,
         plant: data.plant as any,
-        // New fields for failure post
+        // Failure Specific
         failureStatus: data.plant?.status as any,
         failureDuration: data.plant?.duration as any,
         failureCauses: data.failureCauses,
-        failureCause: data.failureCauses.join(', '), // Summary of causes
+        failureCause: data.failureCauses.join(', '),
+        // Comparison Specific
+        comparisonTarget: data.comparisonTarget,
         likes: 0,
         views: 0,
         commentsCount: 0
@@ -55,6 +62,16 @@ export default function SummaryPage() {
   };
 
   const isFailure = data.type === PostType.FAILURE;
+  const isComparison = data.type === PostType.COMPARISON;
+
+  const getTargetLabel = (target?: string) => {
+    switch (target) {
+      case 'ENVIRONMENT': return '다른 집사의 환경';
+      case 'MANAGEMENT': return '다른 집사의 관리 방법';
+      case 'RESULT': return '다른 집사의 결과 상태';
+      default: return '미지정';
+    }
+  };
 
   return (
     <div className='flex flex-col min-h-[70vh] justify-center space-y-8 px-2'>
@@ -81,9 +98,11 @@ export default function SummaryPage() {
               <p className='text-lg font-bold text-gray-800'>
                 {data.plant?.name} ({data.plant?.duration}일 거주)
               </p>
-              <p className='text-sm font-bold text-red-500'>
-                상태: {data.plant?.status === 'DEAD' ? '❌ 사망' : '⭕ 회복불가'}
-              </p>
+              {!isComparison && (
+                <p className='text-sm font-bold text-red-500'>
+                  상태: {data.plant?.status === 'DEAD' ? '❌ 사망' : '⭕ 회복불가'}
+                </p>
+              )}
             </div>
           </div>
 
@@ -94,6 +113,18 @@ export default function SummaryPage() {
                 <p className='text-xs text-gray-400 font-bold uppercase'>추정 원인</p>
                 <p className='text-lg font-bold text-gray-800'>
                   {data.failureCauses?.length > 0 ? data.failureCauses.join(', ') : '원인 미상'}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {isComparison && (
+            <div className='flex items-start gap-3 border-t border-gray-100 pt-4'>
+              <span className='text-xl'>🔍</span>
+              <div className='space-y-1'>
+                <p className='text-xs text-gray-400 font-bold uppercase'>비교 대상</p>
+                <p className='text-lg font-bold text-gray-800'>
+                  {getTargetLabel(data.comparisonTarget)}
                 </p>
               </div>
             </div>

@@ -48,7 +48,29 @@ export default function FeedPage() {
                     <div className='text-sm text-green-800'>
                         나와 <strong>같은 조건</strong>의 기록들을 모았어요
                     </div>
-                    <span className='text-lg'>✨</span>
+                </div>
+
+                {/* Quick Actions */}
+                <div className='flex gap-2 mb-6'>
+                    <Button
+                        variant='outline'
+                        className='flex-1 h-12 bg-white border-gray-100 font-bold text-gray-700'
+                        onClick={() => {
+                            // Reset post store and start failure post flow
+                            router.push('/posts/create');
+                        }}
+                    >
+                        실패 기록
+                    </Button>
+                    <Button
+                        className='flex-1 h-12 bg-green-600 hover:bg-green-700 font-bold shadow-sm'
+                        onClick={() => {
+                            // Start comparison flow directly
+                            router.push('/posts/create/type?default=COMPARISON');
+                        }}
+                    >
+                        비교 질문 🔒
+                    </Button>
                 </div>
 
                 {/* Feed List - useFeed will automatically use environment from store if no filter passed */}
