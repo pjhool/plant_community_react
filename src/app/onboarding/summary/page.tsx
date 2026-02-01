@@ -18,7 +18,7 @@ export default function OnboardingSummaryPage() {
         <p className="text-gray-600 mb-8">
           이제 {user?.displayName || '집사'}님의 환경에 맞는 식물 정보를 추천해드릴게요.
         </p>
-        
+
         <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
           <div className="mb-4">
             <span className="text-sm text-gray-500">거주 환경</span>
@@ -39,6 +39,12 @@ export default function OnboardingSummaryPage() {
           className="block w-full px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
         >
           시작하기
+        </Link>
+        <Link
+          href="/onboarding/setup"
+          className="mt-3 block w-full px-4 py-3 bg-white border border-gray-200 text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+        >
+          환경 다시 설정하기
         </Link>
       </div>
     </div>
