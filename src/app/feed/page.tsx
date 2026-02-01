@@ -90,21 +90,20 @@ export default function FeedPage() {
             </div>
 
             {/* Bottom Navigation */}
-            {/* Bottom Navigation */}
-            <nav className='fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4 z-50'>
-                <Link href="/" className='flex flex-col items-center gap-1 text-gray-400'>
+            <nav className='fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4 z-50 pointer-events-auto'>
+                <Link href="/" className='flex flex-col items-center gap-1 text-gray-400 pointer-events-auto cursor-pointer'>
                     <span className='text-xl'>🏠</span>
                     <span className='text-[10px] font-bold'>홈</span>
                 </Link>
-                <Link href="/feed" className='flex flex-col items-center gap-1 text-green-600'>
+                <Link href="/feed" className='flex flex-col items-center gap-1 text-green-600 pointer-events-auto cursor-pointer'>
                     <span className='text-xl'>📋</span>
                     <span className='text-[10px]'>피드</span>
                 </Link>
-                <Link href="/posts/create" className='flex flex-col items-center gap-1 text-gray-400'>
+                <Link href="/posts/create" className='flex flex-col items-center gap-1 text-gray-400 pointer-events-auto cursor-pointer'>
                     <span className='text-xl'>✍️</span>
                     <span className='text-[10px]'>기록하기</span>
                 </Link>
-                <Link href="/onboarding/summary" className='flex flex-col items-center gap-1 text-gray-400'>
+                <Link href="/onboarding/summary" className='flex flex-col items-center gap-1 text-gray-400 pointer-events-auto cursor-pointer'>
                     <span className='text-xl'>👤</span>
                     <span className='text-[10px]'>내정보</span>
                 </Link>
