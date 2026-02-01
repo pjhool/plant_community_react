@@ -54,7 +54,7 @@ export default function HomePage() {
                 </div>
             </div>
             {/* Bottom Navigation */}
-            <nav className='fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4'>
+            <nav className='fixed bottom-0 left-0 right-0 h-16 bg-white border-t flex items-center justify-around px-4 z-50'>
                 <button onClick={() => router.push('/')} className='flex flex-col items-center gap-1 text-green-600'>
                     <span className='text-xl'>🏠</span>
                     <span className='text-[10px] font-bold'>홈</span>
@@ -63,11 +63,11 @@ export default function HomePage() {
                     <span className='text-xl'>📋</span>
                     <span className='text-[10px]'>기록</span>
                 </button>
-                <button className='flex flex-col items-center gap-1 text-gray-400'>
+                <button onClick={() => router.push('/posts/create/type')} className='flex flex-col items-center gap-1 text-gray-400'>
                     <span className='text-xl'>✍️</span>
                     <span className='text-[10px]'>작성</span>
                 </button>
-                <button className='flex flex-col items-center gap-1 text-gray-400'>
+                <button onClick={() => router.push('/onboarding/summary')} className='flex flex-col items-center gap-1 text-gray-400'>
                     <span className='text-xl'>👤</span>
                     <span className='text-[10px]'>내정보</span>
                 </button>
