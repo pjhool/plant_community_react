@@ -25,10 +25,8 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
             } else if (user && !user.isOnboarded && !pathname.startsWith('/onboarding')) {
                 // Redirect to onboarding if user is not onboarded and not already there
                 router.push('/onboarding/setup');
-            } else if (user && user.isOnboarded && pathname.startsWith('/onboarding')) {
-                // Prevent access to onboarding if already completed
-                router.push('/');
             }
+            // Allow access to onboarding pages even if onboarded (for editing profile)
         }
     }, [user, isLoading, router, pathname]);
 
