@@ -44,7 +44,7 @@ export default function FeedPage() {
                 </div>
             </header>
 
-            <div className='container max-w-lg mx-auto px-4 py-4'>
+            <div className='container max-w-lg mx-auto px-4 py-4 pb-24'>
                 {/* Environmental Context Banner */}
                 <div className='mb-6 p-4 bg-green-50 rounded-xl border border-green-100 flex items-center justify-between'>
                     <div className='text-sm text-green-800'>
@@ -76,9 +76,11 @@ export default function FeedPage() {
                 </div>
 
                 {/* Feed List - useFeed will automatically use environment from store if no filter passed */}
-                <FeedList filter={{}} />
+                <div className='mb-6'>
+                    <FeedList filter={{}} />
+                </div>
 
-                <div className='mt-8 text-center'>
+                <div className='mt-8 text-center pb-4'>
                     <Button
                         variant='ghost'
                         onClick={() => router.push('/')}
