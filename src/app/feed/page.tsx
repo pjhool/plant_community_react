@@ -100,7 +100,7 @@ export default function FeedPage() {
                     <span className='text-xl'>📋</span>
                     <span className='text-[10px]'>피드</span>
                 </Link>
-                <Link href="/posts/create/type" className='flex flex-col items-center gap-1 text-gray-400'>
+                <Link href="/posts/create" className='flex flex-col items-center gap-1 text-gray-400'>
                     <span className='text-xl'>✍️</span>
                     <span className='text-[10px]'>기록하기</span>
                 </Link>
