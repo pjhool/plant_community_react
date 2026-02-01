@@ -36,13 +36,13 @@ export default function OnboardingSummaryPage() {
 
         <Link
           href="/"
-          className="block w-full px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+          className="relative z-10 block w-full px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
         >
           시작하기
         </Link>
         <Link
           href="/onboarding/setup"
-          className="mt-3 block w-full px-4 py-3 bg-white border border-gray-200 text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+          className="relative z-10 mt-3 block w-full px-4 py-3 bg-white border border-gray-200 text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition-colors"
         >
           환경 다시 설정하기
         </Link>
