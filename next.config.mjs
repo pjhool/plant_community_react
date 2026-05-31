@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Produces a minimal standalone bundle for Docker deployments.
+    // Output: .next/standalone — no node_modules copy needed in the final image.
+    output: 'standalone',
     images: {
         remotePatterns: [
             {
