@@ -79,11 +79,15 @@ describe('useAuth', () => {
 
         const { rerender } = renderHook(() => useAuth());
 
-        // Rerender manually to check if effect runs again
+        // Record call count after initial mount (React 19 Strict Mode may invoke effects twice on mount)
+        const callsAfterMount = spy.mock.calls.length;
+
+        // Rerender multiple times — the effect must NOT run again on re-render
+        rerender();
         rerender();
         rerender();
 
-        // The effect should only run once on mount because setUser and setLoading are stable
-        expect(spy).toHaveBeenCalledTimes(1);
+        // Call count must not have increased beyond the initial mount invocations
+        expect(spy).toHaveBeenCalledTimes(callsAfterMount);
     });
 });
