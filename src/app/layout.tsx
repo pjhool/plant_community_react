@@ -5,6 +5,11 @@ import { Providers } from "../core/components/Providers";
 import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { cn } from "@/core/utils/cn";
 
+// Force all pages in this app to be dynamically rendered at request time.
+// This prevents Next.js from attempting SSG prerender at build time, which
+// would fail because Firebase SDK (browser-only) is used throughout the app.
+export const dynamic = 'force-dynamic';
+
 const notoSans = Noto_Sans_KR({
     subsets: ["latin"],
     weight: ["400", "500", "700"],
