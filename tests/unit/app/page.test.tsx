@@ -15,6 +15,15 @@ vi.mock('next/navigation', () => ({
     useRouter: vi.fn(),
 }));
 
+// Mock FeedList and FilterBar to avoid deep dependency chains in a page-level test
+vi.mock('@/features/feed/components/FeedList/FeedList', () => ({
+    FeedList: () => <div data-testid="feed-list" />,
+}));
+
+vi.mock('@/features/feed/components/FilterBar/FilterBar', () => ({
+    FilterBar: () => <div data-testid="filter-bar" />,
+}));
+
 describe('HomePage', () => {
     it('should call signOut and redirect to /login when Sign Out button is clicked', async () => {
         const signOut = vi.fn().mockResolvedValue(undefined);
