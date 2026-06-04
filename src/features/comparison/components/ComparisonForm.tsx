@@ -1,67 +1,79 @@
-"use client";
+import React, { useState } from 'react';
+import { Post } from '../../feed/types/post';
+import { ComparisonSelection } from './ComparisonSelection';
+import { Button } from '@/core/components/Button';
 
-import { useState } from "react";
-import { Button } from "@/core/components/Button";
-import { ComparisonService } from "../../services/comparison-service";
-import { useAuth } from "@/features/auth/hooks/use-auth";
-import { useRouter } from "next/navigation";
-import { PostType } from "@/features/feed/types/post";
+interface ComparisonFormProps {
+  userFailurePosts: Post[];
+  situationPost: Post;
+  onSubmit: (title: string, description: string, postIds: string[]) => void;
+}
 
-export const ComparisonForm = () => {
-    const { user } = useAuth();
-    const router = useRouter();
-    const [labelA, setLabelA] = useState("");
-    const [labelB, setLabelB] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
+export const ComparisonForm = ({ userFailurePosts, situationPost, onSubmit }: ComparisonFormProps) => {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!user || !labelA || !labelB) return;
+  const toggleSelect = (id: string) => {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter(i => i !== id));
+    } else if (selectedIds.length < 2) {
+      setSelectedIds([...selectedIds, id]);
+    } else {
+      alert('You can only select up to 2 posts to compare.');
+    }
+  };
 
-        setIsSubmitting(true);
-        try {
-            await ComparisonService.createComparison(user.uid, {
-                type: PostType.COMPARISON,
-                title: `${labelA} vs ${labelB}`,
-                content: `Which one do you prefer for your home?`,
-                optionA: { label: labelA },
-                optionB: { label: labelB },
-                comparisonCriteria: ['Preference'],
-            });
-            router.push('/');
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedIds.length !== 2) {
+      alert('Please select exactly 2 failure posts to compare.');
+      return;
+    }
+    onSubmit(title, description, selectedIds);
+  };
 
-    return (
-        <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto py-10">
-            <h2 className="text-xl font-bold">Create Comparison Question</h2>
-            <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <label className="text-sm font-medium">Option A</label>
-                    <input 
-                        className="w-full border rounded p-2" 
-                        value={labelA} 
-                        onChange={(e) => setLabelA(e.target.value)}
-                        placeholder="e.g. Watering Weekly"
-                    />
-                </div>
-                <div className="space-y-2">
-                    <label className="text-sm font-medium">Option B</label>
-                    <input 
-                        className="w-full border rounded p-2" 
-                        value={labelB} 
-                        onChange={(e) => setLabelB(e.target.value)}
-                        placeholder="e.g. Watering Daily"
-                    />
-                </div>
-            </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Creating..." : "Create Question"}
-            </Button>
-        </form>
-    );
+  return (
+    <form onSubmit={handleFormSubmit} className='space-y-8'>
+      <div className='space-y-4'>
+        <label className='text-lg font-bold'>1. Select 2 failure cases to compare</label>
+        <p className='text-sm text-muted-foreground italic'>Which of your previous failures should the community look at?</p>
+        <ComparisonSelection 
+          posts={userFailurePosts} 
+          selectedIds={selectedIds} 
+          onSelect={toggleSelect} 
+        />
+        <p className='text-xs text-muted-foreground'>{selectedIds.length}/2 selected</p>
+      </div>
+
+      <div className='space-y-6'>
+        <div className='space-y-2'>
+          <label className='text-sm font-medium'>Comparison Title</label>
+          <input 
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className='flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+            placeholder='e.g., Which failure matches my current issue?'
+          />
+        </div>
+
+        <div className='space-y-2'>
+          <label className='text-sm font-medium'>Question for the Community</label>
+          <textarea 
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+            rows={4}
+            className='flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+            placeholder='Explain why you are comparing these two cases...'
+          />
+        </div>
+      </div>
+
+      <Button type='submit' className='w-full' size='lg' disabled={selectedIds.length !== 2 || !title}>
+        Create Comparison
+      </Button>
+    </form>
+  );
 };

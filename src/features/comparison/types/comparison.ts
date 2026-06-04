@@ -1,21 +1,21 @@
-import { Post, PostType } from '@/features/feed/types/post';
+import { Timestamp } from 'firebase/firestore';
+import { Post } from '../../feed/types/post';
 
-export interface ComparisonPost extends Post {
-    type: PostType.COMPARISON;
-    optionA: {
-        label: string;
-        imageUrl?: string;
-    };
-    optionB: {
-        label: string;
-        imageUrl?: string;
-    };
-    comparisonCriteria: string[]; // e.g., ['Watering', 'Light', 'Potting']
+export interface Comparison {
+    id: string;
+    userId: string;
+    postIds: string[]; // Two failure posts being compared
+    situationPostId: string; // The current situation post (could be a question)
+    
+    // Metadata
+    title: string;
+    description: string;
+    
+    createdAt: Timestamp;
+    updatedAt: Timestamp;
 }
 
-export interface ComparisonVote {
-    postId: string;
-    userId: string;
-    selectedOption: 'A' | 'B';
-    votedAt: any;
+export interface ComparisonDetail extends Omit<Comparison, 'postIds' | 'situationPostId'> {
+    failurePosts: Post[];
+    situationPost: Post;
 }

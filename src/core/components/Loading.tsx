@@ -14,7 +14,7 @@ export const Loading = ({ className, size = "md" }: LoadingProps) => {
     };
 
     return (
-        <div className="flex items-center justify-center p-8">
+        <div className="flex items-center justify-center p-8" role="status" aria-label="Loading">
             <Loader2 className={cn("animate-spin text-primary", sizeClasses[size], className)} />
         </div>
     );

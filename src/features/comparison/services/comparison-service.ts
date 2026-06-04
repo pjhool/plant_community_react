@@ -1,36 +1,56 @@
-import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import { 
+    collection, 
+    query, 
+    where, 
+    getDocs, 
+    addDoc,
+    serverTimestamp,
+    doc,
+    getDoc
+} from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
-import { ComparisonPost, ComparisonVote } from '../types/comparison';
-import { PostStatus } from '@/features/feed/types/post';
+import { Post, PostType } from '../../feed/types/post';
+import { Comparison } from '../types/comparison';
 
 export const ComparisonService = {
     /**
-     * Create a comparison question
+     * Fetch failure posts for a specific user to allow selection
      */
-    createComparison: async (userId: string, data: any): Promise<string> => {
-        const newPost = {
-            ...data,
-            authorId: userId,
-            status: PostStatus.PUBLISHED,
-            views: 0,
-            likes: 0,
-            commentsCount: 0,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-        };
-
-        const docRef = await addDoc(collection(db, 'posts'), newPost);
-        return docRef.id;
+    getUserFailurePosts: async (userId: string): Promise<Post[]> => {
+        try {
+            const q = query(
+                collection(db, 'posts'),
+                where('userId', '==', userId),
+                where('type', '==', PostType.FAILURE)
+            );
+            
+            const querySnapshot = await getDocs(q);
+            const posts: Post[] = [];
+            querySnapshot.forEach((doc) => {
+                posts.push({ id: doc.id, ...doc.data() } as Post);
+            });
+            
+            return posts;
+        } catch (error) {
+            console.error('Error fetching failure posts:', error);
+            throw error;
+        }
     },
 
     /**
-     * Vote on an option
+     * Create a comparison request
      */
-    vote: async (voteData: Omit<ComparisonVote, 'votedAt'>): Promise<void> => {
-        const voteRef = doc(db, 'votes', `${voteData.postId}_${voteData.userId}`);
-        await setDoc(voteRef, {
-            ...voteData,
-            votedAt: serverTimestamp(),
-        });
+    createComparison: async (data: Omit<Comparison, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> => {
+        try {
+            const docRef = await addDoc(collection(db, 'comparisons'), {
+                ...data,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
+            });
+            return docRef.id;
+        } catch (error) {
+            console.error('Error creating comparison:', error);
+            throw error;
+        }
     }
 };
