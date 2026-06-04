@@ -41,9 +41,9 @@ export const SignupForm = () => {
             await AuthService.signUpWithEmail(data.email, data.password, data.displayName);
             // Onboarding flow could be triggered here or via redirect
             router.push("/onboarding/setup");
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(err.message || "Failed to create account.");
+            setError(err instanceof Error ? err.message : "Failed to create account.");
         } finally {
             setIsLoading(false);
         }

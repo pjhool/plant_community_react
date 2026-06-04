@@ -15,7 +15,9 @@ export interface Comment {
     content: string;
     type: CommentType;
     likes: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createdAt: any; // Firestore Timestamp
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updatedAt: any; // Firestore Timestamp
 }
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from '@/features/auth/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useEnvironmentStore } from '@/features/environment-profile/stores/useEnvironmentStore';
@@ -12,7 +11,6 @@ import { useEffect } from 'react';
 import { getResidenceLabel, getLightLabel, getExperienceLabel } from '@/features/environment-profile/utils/labels';
 
 export default function FeedPage() {
-    const { user } = useAuth();
     const { profile } = useEnvironmentStore();
     const router = useRouter();
 

@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { cn } from '@/core/utils/cn';
 
 const survivalSchema = z.object({
     waterCycle: z.string().min(1, '물 주기 정보를 입력해주세요'),

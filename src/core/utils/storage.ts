@@ -9,6 +9,7 @@ export const storage = {
             return null;
         }
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     set: (key: string, value: any) => {
         if (typeof window === 'undefined') return;
         try {

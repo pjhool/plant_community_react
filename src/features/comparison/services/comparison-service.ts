@@ -4,9 +4,7 @@ import {
     where, 
     getDocs, 
     addDoc,
-    serverTimestamp,
-    doc,
-    getDoc
+    serverTimestamp
 } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
 import { Post, PostType } from '../../feed/types/post';

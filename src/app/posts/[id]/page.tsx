@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from '@/features/auth/hooks/use-auth';
 import { useRouter, useParams } from 'next/navigation';
 import { useEnvironmentStore } from '@/features/environment-profile/stores/useEnvironmentStore';
 import { PostService } from '@/features/post/services/post-service';

@@ -28,8 +28,8 @@ const useAuthStore = create<AuthStore>((set) => ({
         try {
             await AuthService.signOut();
             set({ user: null, error: null });
-        } catch (error: any) {
-            set({ error: error.message });
+        } catch (error: unknown) {
+            set({ error: error instanceof Error ? error.message : "An error occurred" });
         } finally {
             set({ isLoading: false });
         }
@@ -60,8 +60,8 @@ export const useAuth = () => {
                         || AuthService.mapFirebaseUserToUser(firebaseUser);
 
                     setUser(userProfile);
-                } catch (e: any) {
-                    console.warn("Firestore access timed out, using basic auth profile.", e.message);
+                } catch (e: unknown) {
+                    console.warn("Firestore access timed out, using basic auth profile.", e instanceof Error ? e.message : String(e));
                     setUser(AuthService.mapFirebaseUserToUser(firebaseUser));
                 }
             } else {
