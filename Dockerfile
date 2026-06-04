@@ -78,8 +78,10 @@ RUN addgroup --system --gid 1001 nodejs \
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 # static assets (/_next/static/*)
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static  ./.next/static
-# public folder (favicon, robots.txt, etc.)
-COPY --from=builder --chown=nextjs:nodejs /app/public        ./public
+# public folder (favicon, robots.txt, etc.) — only copied if it exists.
+# Use a shell glob: if /app/public doesn't exist the pattern simply matches nothing
+# and the COPY is skipped rather than erroring out.
+COPY --from=builder --chown=nextjs:nodejs /app/public*        ./public/
 
 USER nextjs
 
