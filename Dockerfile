@@ -6,7 +6,9 @@
 # ─────────────────────────────────────────────
 FROM node:20-alpine AS deps
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Pin pnpm to the same major version used in CI (pnpm@10).
+# pnpm 11+ requires Node.js v22+ (uses node:sqlite which is unavailable on v20).
+RUN corepack enable && corepack prepare pnpm@10 --activate
 
 WORKDIR /app
 
@@ -27,7 +29,8 @@ RUN pnpm install --frozen-lockfile --offline
 # ─────────────────────────────────────────────
 FROM node:20-alpine AS builder
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Same pnpm version pin as the deps stage.
+RUN corepack enable && corepack prepare pnpm@10 --activate
 
 WORKDIR /app
 
