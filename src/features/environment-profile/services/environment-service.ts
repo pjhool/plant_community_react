@@ -2,7 +2,6 @@ import { db } from '@/core/services/firebase';
 import {
   doc,
   getDoc,
-  setDoc,
   updateDoc,
   writeBatch,
   serverTimestamp

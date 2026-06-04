@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { cn } from '@/core/utils/cn';
 
 const descriptionSchema = z.object({
   content: z.string().min(1, '상황을 설명해주세요').max(300, '최대 300자까지 입력 가능합니다'),

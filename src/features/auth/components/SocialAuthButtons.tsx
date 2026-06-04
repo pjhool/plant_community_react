@@ -17,9 +17,9 @@ export const SocialAuthButtons = () => {
         try {
             await AuthService.signInWithGoogle();
             router.push("/");
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(error);
-            setError(error.message || "Failed to sign in with Google");
+            setError(error instanceof Error ? error.message : "Failed to sign in with Google");
         } finally {
             setIsLoading(false);
             setLoadingProvider(null);
@@ -33,9 +33,9 @@ export const SocialAuthButtons = () => {
         try {
             await AuthService.signInWithGitHub();
             router.push("/");
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error(error);
-            setError(error.message || "Failed to sign in with GitHub");
+            setError(error instanceof Error ? error.message : "Failed to sign in with GitHub");
         } finally {
             setIsLoading(false);
             setLoadingProvider(null);

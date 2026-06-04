@@ -1,7 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
-    getFirestore,
     initializeFirestore,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -26,21 +25,21 @@ const isServer = typeof window === "undefined";
 // Lazy-initialise so that server-side prerender imports this module without
 // throwing. Actual values are only resolved in the browser.
 const getFirebaseApp = () => {
-    if (isServer) return null as any;
+    if (isServer) return null as unknown;
     return !getApps().length ? initializeApp(firebaseConfig) : getApp();
 };
 
 const app = getFirebaseApp();
 
-const auth = isServer ? null as any : getAuth(app);
+const auth = isServer ? null as unknown : getAuth(app);
 
 const db = isServer
-    ? null as any
+    ? null as unknown
     : initializeFirestore(app, {
           ignoreUndefinedProperties: true,
       });
 
-const storage = isServer ? null as any : getStorage(app);
+const storage = isServer ? null as unknown : getStorage(app);
 
 export { app, auth, db, storage };
 export default app;

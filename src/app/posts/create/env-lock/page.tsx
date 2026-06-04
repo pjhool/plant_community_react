@@ -23,7 +23,7 @@ export default function EnvLockPage() {
           experienceLevel: profile.experienceLevel,
           userId: profile.userId,
           location: profile.location || null
-        } as any
+        } as never
       });
     }
   }, [profile, updateData]);

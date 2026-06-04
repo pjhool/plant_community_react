@@ -31,17 +31,17 @@ export default function SummaryPage() {
         author: {
           displayName: user.displayName || 'Unknown',
           photoURL: user.photoURL || null
-        } as any,
+        } as never,
         type: data.type,
         status: PostStatus.PUBLISHED,
         title: data.title || defaultTitle,
         content: data.content,
         images: [],
-        environment: data.environment as any,
-        plant: data.plant as any,
+        environment: data.environment as never,
+        plant: data.plant as never,
         // Failure Specific
-        failureStatus: data.plant?.status as any,
-        failureDuration: data.plant?.duration as any,
+        failureStatus: data.plant?.status as never,
+        failureDuration: data.plant?.duration as never,
         failureCauses: data.failureCauses,
         failureCause: data.failureCauses.join(', '),
         // Comparison Specific

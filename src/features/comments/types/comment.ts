@@ -15,8 +15,8 @@ export interface Comment {
     content: string;
     type: CommentType;
     likes: number;
-    createdAt: any; // Firestore Timestamp
-    updatedAt: any; // Firestore Timestamp
+    createdAt: unknown; // Firestore Timestamp
+    updatedAt: unknown; // Firestore Timestamp
 }
 
 export interface CommentWithAuthor extends Comment {

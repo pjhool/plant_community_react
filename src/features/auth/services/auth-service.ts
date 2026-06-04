@@ -30,8 +30,8 @@ export const AuthService = {
             displayName: displayName,
             photoURL: firebaseUser.photoURL,
             bio: '',
-            createdAt: serverTimestamp() as any,
-            updatedAt: serverTimestamp() as any,
+            createdAt: serverTimestamp() as never,
+            updatedAt: serverTimestamp() as never,
             isOnboarded: false,
         };
 
@@ -51,15 +51,16 @@ export const AuthService = {
 
             // Fetch user data from Firestore or return basic info
             return await AuthService.getUserProfile(firebaseUser.uid) || AuthService.mapFirebaseUserToUser(firebaseUser);
-        } catch (error: any) {
-            console.error("Sign in error:", error.code, error.message);
+        } catch (error: unknown) {
+            const err = error as { code?: string; message?: string };
+            console.error("Sign in error:", err.code, err.message);
             let errorMessage = "Failed to sign in. Please try again.";
 
-            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+            if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
                 errorMessage = "Invalid email or password. Please check your credentials.";
-            } else if (error.code === 'auth/too-many-requests') {
+            } else if (err.code === 'auth/too-many-requests') {
                 errorMessage = "Too many failed login attempts. Please try again later.";
-            } else if (error.code === 'auth/network-request-failed') {
+            } else if (err.code === 'auth/network-request-failed') {
                 errorMessage = "Network error. Please check your internet connection.";
             }
 
@@ -90,8 +91,8 @@ export const AuthService = {
             displayName: firebaseUser.displayName || 'User',
             photoURL: firebaseUser.photoURL,
             bio: '',
-            createdAt: serverTimestamp() as any,
-            updatedAt: serverTimestamp() as any,
+            createdAt: serverTimestamp() as never,
+            updatedAt: serverTimestamp() as never,
             isOnboarded: false,
         };
 
@@ -123,8 +124,8 @@ export const AuthService = {
             displayName: firebaseUser.displayName || 'User',
             photoURL: firebaseUser.photoURL,
             bio: '',
-            createdAt: serverTimestamp() as any,
-            updatedAt: serverTimestamp() as any,
+            createdAt: serverTimestamp() as never,
+            updatedAt: serverTimestamp() as never,
             isOnboarded: false,
         };
 
@@ -151,7 +152,7 @@ export const AuthService = {
             if (docSnap.exists()) {
                 return { uid, ...docSnap.data() } as User;
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Firestore error (likely offline):", error);
             // Return null so the caller can fall back to basic auth info
         }
@@ -170,8 +171,8 @@ export const AuthService = {
             bio: '',
             // These will be inaccurate for just-mapped users without Firestore data, 
             // but serve as a fallback.
-            createdAt: serverTimestamp() as any,
-            updatedAt: serverTimestamp() as any,
+            createdAt: serverTimestamp() as never,
+            updatedAt: serverTimestamp() as never,
         };
     },
 

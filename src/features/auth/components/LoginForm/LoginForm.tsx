@@ -33,9 +33,9 @@ export const LoginForm = () => {
         try {
             await AuthService.signInWithEmail(data.email, data.password);
             router.push("/");
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(err.message || "Failed to login. Please check your credentials.");
+            setError(err instanceof Error ? err.message : "Failed to login. Please check your credentials.");
         } finally {
             setIsLoading(false);
         }

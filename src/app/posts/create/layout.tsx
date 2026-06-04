@@ -17,7 +17,7 @@ const STEPS = [
 export default function PostCreateLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { step, prevStep, reset } = usePostFormStore();
+  const { step, reset } = usePostFormStore();
 
   const currentStep = STEPS.find(s => pathname.includes(s.path.split('/').pop()!))?.id || step;
 
@@ -28,12 +28,6 @@ export default function PostCreateLayout({ children }: { children: ReactNode }) 
     }
   };
 
-  const handleBack = () => {
-    prevStep();
-    const prevPath = STEPS.find(s => s.id === currentStep - 1)?.path;
-    if (prevPath) router.push(prevPath);
-    else router.back();
-  };
 
   if (pathname.includes('/success')) {
       return <>{children}</>;

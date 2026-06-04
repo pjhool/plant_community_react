@@ -1,14 +1,12 @@
 import {
     collection,
-    addDoc,
     serverTimestamp,
     query,
     where,
     orderBy,
     getDocs,
     doc,
-    runTransaction,
-    Timestamp
+    runTransaction
 } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
 import { Comment } from '../types/comment';

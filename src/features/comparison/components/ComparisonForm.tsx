@@ -5,11 +5,10 @@ import { Button } from '@/core/components/Button';
 
 interface ComparisonFormProps {
   userFailurePosts: Post[];
-  situationPost: Post;
   onSubmit: (title: string, description: string, postIds: string[]) => void;
 }
 
-export const ComparisonForm = ({ userFailurePosts, situationPost, onSubmit }: ComparisonFormProps) => {
+export const ComparisonForm = ({ userFailurePosts, onSubmit }: ComparisonFormProps) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
