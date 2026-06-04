@@ -115,7 +115,37 @@ docker build \
 > **Windows 주의사항**: `output: 'standalone'` 빌드 시 symlink 생성에 관리자 권한이 필요합니다.  
 > 설정 → 개인정보 및 보안 → 개발자용 → **개발자 모드**를 활성화하거나, 터미널을 관리자 권한으로 실행하세요.
 
-## 🚦 CI/CD
+## � Vercel 배포
+
+Vercel CLI를 사용해서 직접 배포할 수 있습니다. 상세 내용은 [docs/VERCEL_DEPLOYMENT.md](./docs/VERCEL_DEPLOYMENT.md)를 참고하세요.
+
+### 빠른 시작
+
+```bash
+# 1. Vercel CLI 설치
+pnpm add -g vercel
+
+# 2. 로그인 & 프로젝트 연결
+vercel login
+vercel link
+
+# 3. 환경변수 등록 (최초 1회)
+vercel env add NEXT_PUBLIC_FIREBASE_API_KEY
+vercel env add NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+vercel env add NEXT_PUBLIC_FIREBASE_PROJECT_ID
+vercel env add NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+vercel env add NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+vercel env add NEXT_PUBLIC_FIREBASE_APP_ID
+
+# 4. 배포
+vercel          # preview 배포
+vercel --prod   # production 배포
+```
+
+> **주의**: `DOCKER_BUILD` 환경변수는 Vercel에 등록하지 마세요.  
+> Firebase Console → Authentication → Settings → Authorized domains에 Vercel 도메인을 추가해야 로그인이 동작합니다.
+
+## �🚦 CI/CD
 
 GitHub Actions 워크플로우 3개로 구성됩니다.
 
