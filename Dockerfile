@@ -4,7 +4,7 @@
 # install step can run fully offline and be cached
 # independently of source-code changes.
 # ─────────────────────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 
 # Pin pnpm to the same major version used in CI (pnpm@10).
 # pnpm 11+ requires Node.js v22+ (uses node:sqlite which is unavailable on v20).
@@ -27,7 +27,7 @@ RUN pnpm install --frozen-lockfile --offline
 # build time because Next.js inlines them into
 # the client bundle during `next build`.
 # ─────────────────────────────────────────────
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 # Same pnpm version pin as the deps stage.
 RUN corepack enable && corepack prepare pnpm@10 --activate
