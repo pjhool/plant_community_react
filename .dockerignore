@@ -1,0 +1,39 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies (re-installed inside the image)
+node_modules
+
+# Next.js build output
+.next
+out
+
+# Test & coverage artefacts
+coverage
+test-results
+playwright-report
+
+# Local environment files — never bake secrets into the image
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor / OS noise
+.DS_Store
+*.pem
+.vscode
+.idea
+*.swp
+*.swo
+
+# TypeScript incremental build info
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc tooling caches
+.omo
+.sisyphus
+.serena
