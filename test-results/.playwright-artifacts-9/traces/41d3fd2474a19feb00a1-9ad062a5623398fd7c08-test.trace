@@ -1,0 +1,55 @@
+{"version":8,"type":"context-options","origin":"testRunner","browserName":"","playwrightVersion":"1.58.0","options":{},"platform":"win32","wallTime":1769793786143,"monotonicTime":44768.048,"sdkLanguage":"javascript"}
+{"type":"before","callId":"hook@1","stepId":"hook@1","startTime":44774.276,"class":"Test","method":"hook","title":"Before Hooks","params":{},"stack":[]}
+{"type":"before","callId":"hook@2","stepId":"hook@2","parentId":"hook@1","startTime":44775.3,"class":"Test","method":"hook","title":"beforeEach hook","params":{},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":5,"column":8}]}
+{"type":"before","callId":"fixture@28","stepId":"fixture@28","parentId":"hook@2","startTime":44800.923,"class":"Test","method":"fixture","title":"Fixture \"browser\"","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@29","stepId":"pw:api@29","parentId":"fixture@28","startTime":44808.652,"class":"Test","method":"pw:api","title":"Launch browser","params":{"handleSIGINT":"false","tracesDir":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\test-results\\.playwright-artifacts-9\\traces","headless":"true","ignoreDefaultArgs":"undefined","ignoreAllDefaultArgs":"false","env":"undefined","timeout":"180000"},"stack":[]}
+{"type":"after","callId":"pw:api@29","endTime":45067.48,"annotations":[]}
+{"type":"after","callId":"fixture@28","endTime":45067.805,"annotations":[]}
+{"type":"before","callId":"fixture@32","stepId":"fixture@32","parentId":"hook@2","startTime":45071.471,"class":"Test","method":"fixture","title":"Fixture \"context\"","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@33","stepId":"pw:api@33","parentId":"fixture@32","startTime":45075.33,"class":"Test","method":"pw:api","title":"Create context","params":{"selectorEngines":"[]","testIdAttributeName":"data-testid","acceptDownloads":"accept","bypassCSP":"false","colorScheme":"light","deviceScaleFactor":"1","hasTouch":"false","ignoreHTTPSErrors":"false","isMobile":"false","javaScriptEnabled":"true","locale":"en-US","offline":"false","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.7632.6 Safari/537.36","viewport":"Object","baseURL":"http://localhost:3000","serviceWorkers":"allow","noDefaultViewport":"false","extraHTTPHeaders":"undefined","storageState":"undefined","reducedMotion":"undefined","forcedColors":"undefined","contrast":"undefined","clientCertificates":"undefined"},"stack":[]}
+{"type":"after","callId":"pw:api@33","endTime":45090.083,"annotations":[]}
+{"type":"after","callId":"fixture@32","endTime":45096.002,"annotations":[]}
+{"type":"before","callId":"fixture@34","stepId":"fixture@34","parentId":"hook@2","startTime":45097.079,"class":"Test","method":"fixture","title":"Fixture \"page\"","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@35","stepId":"pw:api@35","parentId":"fixture@34","startTime":45100.483,"class":"Test","method":"pw:api","title":"Create page","params":{},"stack":[]}
+{"type":"after","callId":"pw:api@35","endTime":45220.048,"annotations":[]}
+{"type":"after","callId":"fixture@34","endTime":45220.279,"annotations":[]}
+{"type":"before","callId":"pw:api@36","stepId":"pw:api@36","parentId":"hook@2","startTime":45224.995,"class":"Test","method":"pw:api","title":"Navigate to \"/login\"","params":{"url":"/login","waitUntil":"load","timeout":"0"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":6,"column":16}]}
+{"type":"after","callId":"pw:api@36","endTime":46444.284,"annotations":[]}
+{"type":"before","callId":"expect@37","stepId":"expect@37","parentId":"hook@2","startTime":46451.903,"class":"Test","method":"expect","title":"Expect \"toBeVisible\"","params":{"expected":"Object"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":7,"column":71}]}
+{"type":"after","callId":"expect@37","endTime":46562.044,"annotations":[]}
+{"type":"after","callId":"hook@2","endTime":46562.157,"annotations":[]}
+{"type":"after","callId":"hook@1","endTime":46562.428,"annotations":[]}
+{"type":"before","callId":"pw:api@38","stepId":"pw:api@38","startTime":46566.336,"class":"Test","method":"pw:api","title":"Evaluate locator('form')","params":{"selector":"form","expression":"form => form.setAttribute('novalidate', '')","isFunction":"true","arg":"Object"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":38,"column":16}]}
+{"type":"after","callId":"pw:api@38","endTime":46601.172,"annotations":[]}
+{"type":"before","callId":"pw:api@39","stepId":"pw:api@39","startTime":46603.388,"class":"Test","method":"pw:api","title":"Fill \"invalid-email\" getByPlaceholder('your@email.com')","params":{"selector":"internal:attr=[placeholder=\"your@email.com\"i]","value":"invalid-email","strict":"true","timeout":"0"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":40,"column":51}]}
+{"type":"after","callId":"pw:api@39","endTime":46636.33,"annotations":[]}
+{"type":"before","callId":"pw:api@40","stepId":"pw:api@40","startTime":46638.655,"class":"Test","method":"pw:api","title":"Fill \"123\" getByPlaceholder('••••••')","params":{"selector":"internal:attr=[placeholder=\"••••••\"i]","value":"123","strict":"true","timeout":"0"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":41,"column":43}]}
+{"type":"after","callId":"pw:api@40","endTime":46658.699,"annotations":[]}
+{"type":"before","callId":"pw:api@41","stepId":"pw:api@41","startTime":46661.003,"class":"Test","method":"pw:api","title":"Click getByRole('button', { name: 'Log In' })","params":{"selector":"internal:role=button[name=\"Log In\"i]","strict":"true","timeout":"0"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":43,"column":56}]}
+{"type":"after","callId":"pw:api@41","endTime":46719.103,"annotations":[]}
+{"type":"before","callId":"expect@42","stepId":"expect@42","startTime":46720.646,"class":"Test","method":"expect","title":"Expect \"toBeVisible\"","params":{"expected":"Object"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":46,"column":59}]}
+{"type":"after","callId":"expect@42","endTime":46728.322,"annotations":[]}
+{"type":"before","callId":"expect@43","stepId":"expect@43","startTime":46729.297,"class":"Test","method":"expect","title":"Expect \"toBeVisible\"","params":{"expected":"Object"},"stack":[{"file":"Y:\\Project_Cursor\\Plant-React\\plant_community_react\\tests\\e2e\\login.spec.ts","line":47,"column":76}]}
+{"type":"after","callId":"expect@43","endTime":46737.868,"annotations":[]}
+{"type":"before","callId":"hook@44","stepId":"hook@44","startTime":46738.355,"class":"Test","method":"hook","title":"After Hooks","params":{},"stack":[]}
+{"type":"before","callId":"fixture@45","stepId":"fixture@45","parentId":"hook@44","startTime":46739.223,"class":"Test","method":"fixture","title":"Fixture \"page\"","params":{},"stack":[]}
+{"type":"after","callId":"fixture@45","endTime":46739.368,"annotations":[]}
+{"type":"before","callId":"fixture@46","stepId":"fixture@46","parentId":"hook@44","startTime":46739.631,"class":"Test","method":"fixture","title":"Fixture \"context\"","params":{},"stack":[]}
+{"type":"before","callId":"pw:api@47","stepId":"pw:api@47","parentId":"fixture@46","startTime":50943.552,"class":"Test","method":"pw:api","title":"Close context","params":{"reason":"Test ended."},"stack":[]}
+{"type":"after","callId":"pw:api@47","endTime":50949.183,"annotations":[]}
+{"type":"after","callId":"fixture@46","endTime":50949.374,"annotations":[]}
+{"type":"before","callId":"fixture@52","stepId":"fixture@52","parentId":"hook@44","startTime":50952.123,"class":"Test","method":"fixture","title":"Fixture \"baseURL\"","params":{},"stack":[{"file":"project#chromium","line":1,"column":1}],"group":"configuration"}
+{"type":"after","callId":"fixture@52","endTime":50952.169,"annotations":[]}
+{"type":"before","callId":"fixture@53","stepId":"fixture@53","parentId":"hook@44","startTime":50952.395,"class":"Test","method":"fixture","title":"Fixture \"userAgent\"","params":{},"stack":[{"file":"project#chromium","line":1,"column":1}],"group":"configuration"}
+{"type":"after","callId":"fixture@53","endTime":50952.423,"annotations":[]}
+{"type":"before","callId":"fixture@55","stepId":"fixture@55","parentId":"hook@44","startTime":50952.883,"class":"Test","method":"fixture","title":"Fixture \"viewport\"","params":{},"stack":[{"file":"project#chromium","line":1,"column":1}],"group":"configuration"}
+{"type":"after","callId":"fixture@55","endTime":50952.924,"annotations":[]}
+{"type":"before","callId":"fixture@62","stepId":"fixture@62","parentId":"hook@44","startTime":50955.07,"class":"Test","method":"fixture","title":"Fixture \"isMobile\"","params":{},"stack":[{"file":"project#chromium","line":1,"column":1}],"group":"configuration"}
+{"type":"after","callId":"fixture@62","endTime":50955.121,"annotations":[]}
+{"type":"before","callId":"fixture@66","stepId":"fixture@66","parentId":"hook@44","startTime":50956.298,"class":"Test","method":"fixture","title":"Fixture \"hasTouch\"","params":{},"stack":[{"file":"project#chromium","line":1,"column":1}],"group":"configuration"}
+{"type":"after","callId":"fixture@66","endTime":50956.328,"annotations":[]}
+{"type":"before","callId":"fixture@68","stepId":"fixture@68","parentId":"hook@44","startTime":50956.765,"class":"Test","method":"fixture","title":"Fixture \"deviceScaleFactor\"","params":{},"stack":[{"file":"project#chromium","line":1,"column":1}],"group":"configuration"}
+{"type":"after","callId":"fixture@68","endTime":50956.791,"annotations":[]}
+{"type":"after","callId":"hook@44","endTime":50960.013,"annotations":[]}
+{"type":"before","callId":"attach@512dac82a353bcac19aed10a84234e7e","stepId":"attach@512dac82a353bcac19aed10a84234e7e","startTime":51384.553,"class":"Test","method":"test.attach","title":"Attach \"trace\"","params":{},"stack":[]}
+{"type":"after","callId":"attach@512dac82a353bcac19aed10a84234e7e","endTime":51384.64,"attachments":[]}

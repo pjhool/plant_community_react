@@ -54,7 +54,7 @@ export const AuthService = {
         } catch (error: any) {
             console.error("Sign in error:", error.code, error.message);
             let errorMessage = "Failed to sign in. Please try again.";
-            
+
             if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
                 errorMessage = "Invalid email or password. Please check your credentials.";
             } else if (error.code === 'auth/too-many-requests') {
@@ -62,7 +62,7 @@ export const AuthService = {
             } else if (error.code === 'auth/network-request-failed') {
                 errorMessage = "Network error. Please check your internet connection.";
             }
-            
+
             throw new Error(errorMessage);
         }
     },
@@ -149,7 +149,7 @@ export const AuthService = {
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
-                return docSnap.data() as User;
+                return { uid, ...docSnap.data() } as User;
             }
         } catch (error: any) {
             console.error("Firestore error (likely offline):", error);

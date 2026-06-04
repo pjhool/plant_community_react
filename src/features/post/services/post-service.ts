@@ -1,32 +1,38 @@
-import { collection, addDoc, serverTimestamp, doc, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '@/core/services/firebase';
-import { Post, PostStatus } from '@/features/feed/types/post';
+import { Post, PostType } from '../../feed/types/post';
 import { StorageService } from '@/core/services/storage';
+import { AuthService } from '@/features/auth/services/auth-service';
 
 export const PostService = {
     /**
-     * Create a new post with images
+     * Create a new post with optional images
      */
-    createPost: async (userId: string, postData: any, imageFiles: File[]): Promise<string> => {
+    createPost: async (postData: Omit<Post, 'id' | 'createdAt' | 'updatedAt'>, imageFiles: File[]): Promise<string> => {
         try {
-            // 1. Upload images first
-            const imageUrls = await StorageService.uploadMultipleImages(userId, imageFiles);
-            
-            // 2. Prepare post document
-            const newPost = {
+            // 1. Create document initial draft
+            const postsRef = collection(db, 'posts');
+            const docRef = await addDoc(postsRef, {
                 ...postData,
-                authorId: userId,
-                images: imageUrls,
-                status: PostStatus.PUBLISHED,
-                views: 0,
+                images: [], // Placeholder
                 likes: 0,
+                views: 0,
                 commentsCount: 0,
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp(),
-            };
+            });
 
-            // 3. Save to Firestore
-            const docRef = await addDoc(collection(db, 'posts'), newPost);
+            // 2. Upload images if any
+            let imageUrls: string[] = [];
+            if (imageFiles.length > 0) {
+                imageUrls = await StorageService.uploadImages(imageFiles, `posts/${docRef.id}`);
+
+                // 3. Update document with image URLs
+                await updateDoc(doc(db, 'posts', docRef.id), {
+                    images: imageUrls,
+                });
+            }
+
             return docRef.id;
         } catch (error) {
             console.error('Error creating post:', error);
@@ -35,10 +41,29 @@ export const PostService = {
     },
 
     /**
-     * Hide a post
+     * Get a single post by ID
      */
-    hidePost: async (postId: string): Promise<void> => {
-        const postRef = doc(db, 'posts', postId);
-        await updateDoc(postRef, { status: PostStatus.HIDDEN, updatedAt: serverTimestamp() });
+    getPost: async (postId: string): Promise<Post | null> => {
+        try {
+            const docRef = doc(db, 'posts', postId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                const post = { id: docSnap.id, ...docSnap.data() } as Post;
+
+                // Join Author Data
+                if (post.authorId) {
+                    const author = await AuthService.getUserProfile(post.authorId);
+                    if (author) {
+                        return { ...post, author };
+                    }
+                }
+
+                return post;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error fetching post:', error);
+            throw error;
+        }
     }
 };
