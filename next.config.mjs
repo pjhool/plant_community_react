@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Produces a minimal standalone bundle for Docker deployments.
-    // Output: .next/standalone — no node_modules copy needed in the final image.
-    output: 'standalone',
+    // 'standalone' output is only needed for Docker deployments.
+    // Vercel manages its own build output and does not support this option.
+    // Set DOCKER_BUILD=true in the Docker build environment to enable it.
+    ...(process.env.DOCKER_BUILD === 'true' && { output: 'standalone' }),
     images: {
         remotePatterns: [
             {
