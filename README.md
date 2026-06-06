@@ -145,13 +145,15 @@ vercel --prod   # production 배포
 > **주의**: `DOCKER_BUILD` 환경변수는 Vercel에 등록하지 마세요.  
 > Firebase Console → Authentication → Settings → Authorized domains에 Vercel 도메인을 추가해야 로그인이 동작합니다.
 
-## �🚦 CI/CD
+## 🚦 CI/CD
 
-GitHub Actions 워크플로우 3개로 구성됩니다.
+> **💡 로컬 검증 권장**: 원격 저장소에 푸시하기 전에 개발자가 로컬에서 직접 `pnpm lint`, `pnpm type-check`, `pnpm test`를 실행하여 1차 검증을 수행하도록 권장합니다. (필요시 Husky 등을 이용해 `pre-push` 깃 훅을 걸어 자동화할 수도 있습니다.)
+
+GitHub Actions 워크플로우 4개로 구성됩니다. 각 브랜치와 이벤트에 따라 역할이 명확히 분리되어 있습니다.
 
 ### `pr-check.yml` — PR 품질 게이트
 
-**트리거**: PR open/update → `main`, `develop` / push → `main`, `develop`
+**트리거**: PR open/update/reopen → `develop`, `main`, `feature/*`, `release/*`
 
 | 단계 | 내용 |
 |---|---|
@@ -159,37 +161,51 @@ GitHub Actions 워크플로우 3개로 구성됩니다.
 | Lint | `pnpm lint` |
 | Type Check | `pnpm type-check` |
 | Security Audit | `pnpm audit` |
-| Test & Coverage | `pnpm test:coverage` |
+| Test & Coverage | `pnpm test:coverage` (Codecov 업로드 포함) |
 | Upload Coverage | coverage 리포트를 Artifact로 업로드 |
+| Build Check | `pnpm build`를 통한 빌드 무결성 확인 |
 
 ---
 
-### `develop.yml` — develop 브랜치 CI + Docker push
+### `develop.yml` — develop 브랜치 개발 배포
 
 **트리거**: push → `develop`
 
 | 단계 | 내용 |
 |---|---|
 | Install | `pnpm install --frozen-lockfile` |
-| Lint | `pnpm lint` |
-| Type Check | `pnpm type-check` |
-| Test & Coverage | `pnpm test:coverage` |
 | Build | `pnpm build` |
 | Docker Build & Push | `ghcr.io/<owner>/<repo>:develop`, `ghcr.io/<owner>/<repo>:develop-<sha>` |
 
+*참고: PR 머지 시 품질 검증이 선행되므로, 배포 속도 향상을 위해 Lint/Test 단계를 생략합니다.*
+
 ---
 
-### `ci.yml` — main/develop 통합 CI
+### `release.yml` — release 브랜치 스테이징 검증 및 배포
 
-**트리거**: push/PR → `main`, `develop`
+**트리거**: push → `release/*`
 
 | 단계 | 내용 |
 |---|---|
 | Install | `pnpm install --frozen-lockfile` |
-| Lint | `pnpm lint` |
-| Type Check | `pnpm type-check` |
-| Test & Coverage | `pnpm test:coverage` (Codecov 업로드) |
+| Lint & Type Check | `pnpm lint` && `pnpm type-check` |
+| Test & Coverage | `pnpm test:coverage` |
 | Build | `pnpm build` |
+| Docker Build & Push | `ghcr.io/<owner>/<repo>:release`, `ghcr.io/<owner>/<repo>:release-<sha>` |
+
+---
+
+### `main.yml` — main 브랜치 운영 배포
+
+**트리거**: push → `main`
+
+| 단계 | 내용 |
+|---|---|
+| Install | `pnpm install --frozen-lockfile` |
+| Lint & Type Check | `pnpm lint` && `pnpm type-check` |
+| Test & Coverage | `pnpm test:coverage` |
+| Build | `pnpm build` |
+| Docker Build & Push | `ghcr.io/<owner>/<repo>:latest`, `ghcr.io/<owner>/<repo>:prod-<sha>` |
 
 ---
 
@@ -198,8 +214,9 @@ GitHub Actions 워크플로우 3개로 구성됩니다.
 이미지는 [GitHub Container Registry (ghcr.io)](https://ghcr.io) 에 push됩니다.
 
 ```
-ghcr.io/pjhool/plant_community_react:develop        # develop 브랜치 최신
-ghcr.io/pjhool/plant_community_react:develop-a1b2c3 # 커밋 SHA
+ghcr.io/pjhool/plant_community_react:develop        # 개발 환경 배포 (최신)
+ghcr.io/pjhool/plant_community_react:release        # 스테이징 환경 배포 (최신)
+ghcr.io/pjhool/plant_community_react:latest         # 운영 환경 배포 (최신)
 ```
 
 push에는 별도 secrets 불필요 — `GITHUB_TOKEN`으로 자동 인증됩니다.  
@@ -209,13 +226,13 @@ push에는 별도 secrets 불필요 — `GITHUB_TOKEN`으로 자동 인증됩니
 
 | Secret | 용도 |
 |---|---|
-| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase 설정 (develop.yml, pr-check.yml) |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Firebase 설정 (모든 빌드 및 배포 워크플로우) |
 | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Firebase 설정 |
 | `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | Firebase 설정 |
 | `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | Firebase 설정 |
 | `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase 설정 |
 | `NEXT_PUBLIC_FIREBASE_APP_ID` | Firebase 설정 |
-| `CODECOV_TOKEN` | 커버리지 업로드 (ci.yml) |
+| `CODECOV_TOKEN` | 커버리지 업로드 (pr-check.yml) |
 
 ## 📄 라이선스
 
