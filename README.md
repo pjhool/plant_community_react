@@ -53,6 +53,37 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
 ```
 
+### Firebase 셋업
+
+상세한 프로젝트 설정 및 데이터베이스 스키마는 [docs/FIREBASE_SETUP.md](./docs/FIREBASE_SETUP.md)를 참고하세요.
+
+1. **서비스 활성화**: [Firebase Console](https://console.firebase.google.com/)에서 프로젝트 생성 후 아래 서비스를 활성화합니다.
+   - **Authentication**: 이메일/비밀번호 및 Google 로그인 활성화
+   - **Firestore Database**: asia-northeast3 (서울) 리전 권장
+   - **Storage**: 이미지 업로드용 저장 공간 생성
+2. **Firebase CLI 연결**:
+   ```bash
+   # CLI 도구 전역 설치
+   pnpm add -g firebase-tools
+   # 로그인 및 프로젝트 연결
+   firebase login
+   firebase use --add
+   ```
+3. **보안 규칙 및 복합 인덱스 배포**:
+   ```bash
+   # 규칙 및 인덱스 동시 배포
+   firebase deploy --only firestore
+   ```
+
+### Firebase SDK 초기화
+
+Firebase 클라이언트 SDK는 `src/core/services/firebase.ts`에서 싱글톤 객체로 관리됩니다.
+
+```typescript
+import { auth, db, storage } from "@/core/services/firebase";
+```
+*주의: Firebase 클라이언트 SDK는 브라우저 사이드에서만 작동하도록 초기화 로직이 SSR 분기 처리되어 있습니다.*
+
 ## 📂 프로젝트 구조
 
 ```
