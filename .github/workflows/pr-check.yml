@@ -2,9 +2,12 @@ name: PR Check
 
 on:
   pull_request:
+    branches:
+      - develop
+      - main
+      - 'feature/*'
+      - 'release/*'
     types: [opened, synchronize, reopened]
-  push:
-    branches: [develop, main]
 
 jobs:
   quality-check:
@@ -40,9 +43,24 @@ jobs:
       - name: Run Tests with Coverage
         run: pnpm test:coverage
 
-      - name: Upload Coverage Report
+      - name: Upload Coverage Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Build Check
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
